@@ -1,113 +1,122 @@
-import Image from "next/image";
+"use client";
+import { Provider } from 'react-redux';
+import store from '../app/state/store';
+import { useEffect, useState } from 'react';
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Navbar from '../components/Navbar';
+
+const NextArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <div onClick={onClick} className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 flex justify-center items-center bg-black bg-opacity-50 text-white rounded-full cursor-pointer z-10">
+      &rarr;
+    </div>
+  );
+};
+
+const PrevArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <div onClick={onClick} className="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 flex justify-center items-center bg-black bg-opacity-50 text-white rounded-full cursor-pointer z-10">
+      &larr;
+    </div>
+  );
+};
 
 export default function Home() {
+  const [bgOpacity, setBgOpacity] = useState(1);
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    const newOpacity = Math.max(1 - scrollY / 300, 0);
+    setBgOpacity(newOpacity);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <div className="fixed top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat z-[-1] transition-opacity duration-500" style={{ backgroundImage: "url('/1.jpg')", filter: 'blur(2px)', opacity: bgOpacity }}></div>
+      <Navbar />
+      <div className="relative w-full py-20 text-center text-white flex flex-col items-center">
+        <h1 className="mt-40 text-7xl font-semibold text-custom-blue">ABCD Taxi Service</h1>
+        <h2 className="mt-10 text-3xl font-light">SEATTLE'S PREMIUM TRANSPORTATION COMPANY</h2>
+        <div className="flex gap-5 mt-10 mb-20 py-4 px-10">
+          <button className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-blue-600" onClick={() => window.location.href = '/book'}>Book a Ride</button>
+          <button className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white" onClick={() => window.location.href = 'tel:+1234567890'}>+94702610614</button>
+        </div>
+        <div className="mb-2 max-w-3xl mx-auto mt-20 p-10 text-black bg-opacity-80 rounded-lg">
+          <p className="text-4xl font-light">THE BEST SEATTLE AIRPORT TRANSPORTATION COMPANY</p>
+          <p className="mt-6 text-lg font-extralight">NW Car Services, A well known and respected transportation provider in Seattle, Washington. With a fleet of over 10 vehicles, NW Car Services provides professional, timely, reliable and unforgettable transportation experience: prompt, dependable, safe, and relaxing. With Seattle Car Service, customers experience first-class style and convenience while riding to and from any occasion.</p>
+        </div>
+        <div className="max-w-3xl mx-auto mt-1 p-1 text-black bg-opacity-80 rounded-lg">
+          <p className="text-4xl font-light">SEATTLE'S SPECIAL TRANSPORTATION SERVICES</p>
+        </div>
+        <div className="flex gap-12 mt-10">
+          <div className="flex flex-col items-center text-center max-w-xs">
+            <img src="/ap.jpg" alt="Image 1" className="w-full rounded-lg" />
+            <p className="mt-8 text-lg font-medium text-black">AIRPORT TRANSFERS</p>
+            <p className="mt-2 text-base font-light text-black">NWCS providing Affordable, on time and safe ground transportation to and from all major airports and Seaports.</p>
+          </div>
+          <div className="flex flex-col items-center text-center max-w-xs">
+            <img src="/wed.jpg" alt="Image 2" className="w-full rounded-lg" />
+            <p className="mt-8 text-lg font-medium text-black">SPECIAL EVENTS</p>
+            <p className="mt-2 text-base font-light text-black">Special events mark important milestones and create cherished memories. Whether it’s a wedding, anniversary, or a corporate gathering.</p>
+          </div>
+          <div className="flex flex-col items-center text-center max-w-xs">
+            <img src="/1.jpg" alt="Image 3" className="w-full rounded-lg" />
+            <p className="mt-8 text-lg font-medium text-black">LONG DISTANCE</p>
+            <p className="mt-2 text-base font-light text-black">NWCS providing affordable long distance transportation services, To / From Any major cities book yours now.</p>
+          </div>
+        </div>
+        <div className="w-4/5 mt-10 mx-auto">
+          <p className="text-4xl font-light text-black mt-10 mb-5">THE BEST LATE MODEL VEHICLES FLEET</p>
+          <Slider {...settings}>
+            <div className="flex flex-col items-center">
+              <img src="/ls.png" alt="Vehicle 1" className="w-[450px] h-[250px] rounded-lg" />
+              <p className="mt-2 text-base font-light text-black text-center">Luxury Sedan</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <img src="/suv.png" alt="Vehicle 2" className="w-[450px] h-[250px] rounded-lg" />
+              <p className="mt-2 text-base font-light text-black text-center">SUV</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <img src="/mihivan.png" alt="Vehicle 3" className="w-[450px] h-[250px] rounded-lg" />
+              <p className="mt-2 text-base font-light text-black text-center">Mini Van</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <img src="/van.png" alt="Vehicle 4" className="w-[450px] h-[250px] rounded-lg" />
+              <p className="mt-2 text-base font-light text-black text-center">Van</p>
+            </div>
+          </Slider>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </>
   );
 }
