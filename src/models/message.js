@@ -2,25 +2,23 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema(
+const messageSchema = new Schema(
   {
     email: {
       type: String,
       unique: true,
       required: true,
     },
-   
-    password: {
+    name: {
       type: String,
       required: false,
     },
-    role: { 
-      type: String, 
-      enum: ['user', 'admin'], default: 'user'
-     },
-
+    message: {
+        type: String,
+        required: false,
+      },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.User || mongoose.model("User", userSchema);
+export default mongoose.models.Message || mongoose.model("Message", messageSchema);

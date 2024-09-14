@@ -4,6 +4,9 @@ const config = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })({
   reactStrictMode: true,
+  images: {
+    domains: ['lh3.googleusercontent.com'], // Add allowed domains here
+  },
 });
 
 export default config;
