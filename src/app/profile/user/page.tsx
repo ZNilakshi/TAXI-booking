@@ -1,141 +1,131 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-`;
-
-const ProfileCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-`;
-
-const Avatar = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-bottom: 20px;
-`;
-
-const UserName = styled.h2`
-  margin: 0;
-  font-size: 1.5rem;
-  text-align: center;
-`;
-
-const UserEmail = styled.p`
-  margin: 0;
-  font-size: 1rem;
-  color: #666;
-  text-align: center;
-`;
-
-const BookingHistoryContainer = styled.div`
-  width: 100%;
-  max-width: 800px;
-`;
-
-const BookingItem = styled.div`
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-`;
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import Navbar from "../../../components/Navbar";
 
 export default function UserProfile() {
-  const [user, setUser] = useState(null);
-  const [bookingHistory, setBookingHistory] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: session } = useSession();
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("profile");
 
+  // Fetch booking data for the logged-in user
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        console.log('Fetching user details...');
-        const userResponse = await fetch('/api/users');
-        if (!userResponse.ok) {
-          throw new Error(`Failed to fetch user details: ${userResponse.statusText}`);
-        }
-        const userData = await userResponse.json();
-        // Assuming the response is an array of users, select the relevant user (e.g., the first one)
-        setUser(userData[0]);
-        console.log('User details fetched successfully:', userData[0]);
+    if (!session?.user?.email) return; // Ensure the session and email are available
 
-        console.log('Fetching booking history...');
-        const bookingResponse = await fetch('/api/bookings');
-        if (!bookingResponse.ok) {
-          throw new Error(`Failed to fetch booking history: ${bookingResponse.statusText}`);
+    const fetchBookings = async () => {
+      try {
+        const response = await fetch(`/api/bookings?email=${session.user.email}`); // Pass email as query param
+        const data = await response.json();
+
+        if (response.ok) {
+          setBookings(data);
+        } else {
+          console.error("Failed to fetch bookings:", data.message);
         }
-        const bookingData = await bookingResponse.json();
-        // Assuming the response is an array of bookings, filter or map the data as needed
-        setBookingHistory(bookingData);
-        console.log('Booking history fetched successfully:', bookingData);
       } catch (error) {
-        setError(error.message);
-        console.error('Error fetching data:', error);
+        console.error("Error fetching bookings:", error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
-    fetchUserData();
-  }, []);
+    fetchBookings();
+  }, [session?.user?.email]);
 
   return (
-    <ProfileContainer>
-      <h1>Profile</h1>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <>
-          {user && (
-            <ProfileCard>
-              <Avatar src={user.profilePicture} alt={`${user.name}'s profile picture`} />
-              <UserName>{user.name}</UserName>
-              <UserEmail>{user.email}</UserEmail>
-            </ProfileCard>
+    <div className="flex flex-col items-center p-10 bg-gray-100 min-h-screen">
+   
+      <Navbar/>
+     
+      <div className="flex w-full max-w-5xl mt-10 bg-white shadow-xl rounded-xl overflow-hidden">
+        {/* Left Sidebar with Tabs */}
+        <div className="w-1/4 bg-gray-50 p-6 border-r border-gray-200">
+          
+          
+
+          {/* Tabs for navigation */}
+          <ul className="space-y-3">
+            <li>
+              <button
+                className={`w-full text-left px-4 py-3 font-medium transition-colors ${
+                  activeTab === "profile"
+                    ? "bg-custom-blue text-white rounded-md shadow"
+                    : "text-gray-600 hover:bg-gray-200 hover:text-gray-900 rounded-md"
+                }`}
+                onClick={() => setActiveTab("profile")}
+              >
+                Profile
+              </button>
+            </li>
+            <li>
+              <button
+                className={`w-full text-left px-4 py-3 font-medium transition-colors ${
+                  activeTab === "bookingHistory"
+                    ? "bg-custom-blue text-white rounded-md shadow"
+                    : "text-gray-600 hover:bg-gray-200 hover:text-gray-900 rounded-md"
+                }`}
+                onClick={() => setActiveTab("bookingHistory")}
+              >
+                Booking History
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        {/* Right Content Area */}
+        <div className="w-3/4 p-8 bg-gray-50">
+          {activeTab === "profile" && (
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-gray-800 border-b border-gray-300 pb-2">
+                Profile Information
+              </h3>
+              <div className="mt-4 space-y-4">
+                <div className="bg-white p-4 rounded-lg shadow-md">
+                  <p className="text-lg font-semibold">Name</p>
+                  <p className="text-gray-700">{session?.user?.name || "User Name"}</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-md">
+                  <p className="text-lg font-semibold">Email</p>
+                  <p className="text-gray-700">{session?.user?.email || "user@example.com"}</p>
+                </div>
+              </div>
+            </div>
           )}
-          <BookingHistoryContainer>
-            <h2>Booking History</h2>
-            {bookingHistory.length > 0 ? (
-              bookingHistory.map((booking) => (
-                <BookingItem key={booking.bookingId}>
-                  <div>
-                    <strong>Booking ID:</strong> {booking.bookingId}
-                  </div>
-                  <div>
-                    <strong>Pickup Location:</strong> {booking.pickupLocation}
-                  </div>
-                  <div>
-                    <strong>Drop Location:</strong> {booking.dropLocation}
-                  </div>
-                  <div>
-                    <strong>Date & Time:</strong> {new Date(booking.dateTime).toLocaleString()}
-                  </div>
-                  <div>
-                    <strong>Vehicle:</strong> {booking.selectedVehicle}
-                  </div>
-                  <div>
-                    <strong>Payment Method:</strong> {booking.paymentMethod}
-                  </div>
-                </BookingItem>
-              ))
-            ) : (
-              <p>No bookings found.</p>
-            )}
-          </BookingHistoryContainer>
-        </>
-      )}
-    </ProfileContainer>
+
+          {activeTab === "bookingHistory" && (
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-gray-800 border-b border-gray-300 pb-2">
+                Booking History
+              </h3>
+              {loading ? (
+                <p className="text-gray-500">Loading booking history...</p>
+              ) : bookings.length > 0 ? (
+                <ul className="divide-y divide-gray-200">
+                  {bookings.map((booking) => (
+                    <li
+                      key={booking._id}
+                      className="flex justify-between items-center py-4 bg-white px-6 rounded-lg shadow mb-4"
+                    >
+                      <div>
+                        <p className="text-lg font-semibold text-gray-800">
+                          {booking.pickupLocation || "N/A"} to {booking.dropLocation || "N/A"}
+                        </p>
+                        <div className="text-sm text-gray-600">
+                          {new Date(booking.dateTime).toLocaleString()}
+                        </div>
+                      </div>
+                    
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">No bookings found.</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

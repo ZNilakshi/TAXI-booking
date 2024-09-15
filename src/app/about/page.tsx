@@ -6,36 +6,17 @@ import Modal from '../../components/Modal'; // Import the Modal component
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from 'axios';
-import Image from 'next/image';
-
-interface Review {
-  user: {
-    email: string;
-    name: string;
-    photo: string;
-  };
-  text: string;
-  country: string;
-  
-}
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  review?: any;
-  children?: React.ReactNode;  // Allowing children
-}
-
 
 export default function About() {
   const { data: session } = useSession();
-  const [bgOpacity, setBgOpacity] = useState<number>(1);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [newReview, setNewReview] = useState<string>('');
-  const [country, setCountry] = useState<string>('');
-  const [expandedReviewIndex, setExpandedReviewIndex] = useState<number | null>(null);
-  const [visibleReviews, setVisibleReviews] = useState<number>(10);
-  const [modalOpen, setModalOpen] = useState<boolean>(false); // State for modal visibility
-  const [selectedReview, setSelectedReview] = useState<Review | null>(null); // State for selected review
+  const [bgOpacity, setBgOpacity] = useState(1);
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState('');
+  const [country, setCountry] = useState('');
+  const [expandedReviewIndex, setExpandedReviewIndex] = useState(null);
+  const [visibleReviews, setVisibleReviews] = useState(10);
+  const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
+  const [selectedReview, setSelectedReview] = useState(null); // State for selected review
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
@@ -44,12 +25,12 @@ export default function About() {
   };
 
   const handleAddReview = async () => {
-    if (session && newReview.trim() !== '' && country.trim() !== '') {
-      const review: Review = {
+    if (newReview.trim() !== '' && country.trim() !== '') {
+      const review = {
         user: {
-          email: session?.user?.email ?? '',
-          name: session?.user?.name ?? '',
-          photo: session?.user?.image ?? ''
+          email: session.user.email,
+          name: session.user.name,
+          photo: session.user.image
         },
         text: newReview,
         country
@@ -86,7 +67,7 @@ export default function About() {
     };
   }, []);
 
-  const handleExpandReview = (index: number) => {
+  const handleExpandReview = (index) => {
     setExpandedReviewIndex(expandedReviewIndex === index ? null : index);
   };
 
@@ -96,7 +77,7 @@ export default function About() {
 
   const topReviews = reviews.slice(0, visibleReviews);
 
-  const openModal = (review: Review) => {
+  const openModal = (review) => {
     setSelectedReview(review);
     setModalOpen(true);
   };
@@ -108,32 +89,19 @@ export default function About() {
 
   return (
     <>
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat z-[-1] transition-opacity duration-500"
-        style={{ backgroundImage: "url('/6.jpg')", filter: "blur(2px)", opacity: bgOpacity }}
-      ></div>
+      <div className="fixed top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat z-[-1] transition-opacity duration-500" style={{ backgroundImage: "url('/6.jpg')", filter: "blur(2px)", opacity: bgOpacity }}></div>
       <Navbar />
       <div className="relative w-full py-20 text-center text-white flex flex-col items-center">
         <h1 className="mt-40 text-7xl font-semibold text-white">WHO WE ARE</h1>
         <div className="flex gap-5 mt-10 mb-20 py-4 px-10">
-          <button
-            className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-blue-600"
-            onClick={() => window.location.href = '/booking'}
-          >
-            Book a Ride
-          </button>
-          <button
-            className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white"
-            onClick={() => window.location.href = 'tel:+94702610614'}
-          >
-            +94702610614
-          </button>
+          <button className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-blue-600" onClick={() => window.location.href = '/booking'}>Book a Ride</button>
+          <button className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white" onClick={() => window.location.href = 'tel:+94702610614'}>+94702610614</button>
         </div>
         <div className="w-4/5 mt-12 p-10 mx-auto"></div>
         <div className="flex gap-12 mt-11 p-20">
-        <div className="flex items-center">
-  <Image src="/ap.jpg" alt="Image 1" className="rounded-lg" width={500} height={300} />
-        </div>
+          <div className="flex items-center">
+            <img src="/ap.jpg" alt="Image 1" className="w-full rounded-lg" style={{ maxWidth: '500px' }} />
+          </div>
           <div className="flex flex-col justify-center max-w-xs font-light text-3xl">
             <p className="text-black text-4xl mb-5 font-light">ABOUT US</p>
             <p className="mt-2 text-base font-light text-black">
@@ -143,97 +111,77 @@ export default function About() {
           </div>
         </div>
       </div>
-
+     
       <div className="relative w-full mt-10 flex flex-col items-center justify-center text-center p-10 bg-gray-100">
-        <h2 className="text-3xl font-semibold mb-5">Reviews</h2>
-        {session ? (
-          <div className="w-full max-w-2xl bg-white p-6 border border-gray-300 rounded shadow-lg mb-6">
-            <textarea
-              className="w-full p-3 mb-3 border border-gray-300 rounded"
-              rows={3} // Fixed the type issue
-              placeholder="Add a review..."
-              value={newReview}
-              onChange={(e) => setNewReview(e.target.value)}
-            />
-            <input
-              className="w-full p-3 mb-3 border border-gray-300 rounded"
-              type="text"
-              placeholder="Country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-            />
-            <button
-              className="bg-custom-blue text-white py-2 px-4 rounded hover:bg-white hover:text-blue-600"
-              onClick={handleAddReview}
-            >
-              Submit Review
-            </button>
+  <h2 className="text-3xl font-semibold mb-5">Reviews</h2>
+  {session ? (
+    <div className="w-full max-w-2xl bg-white p-6 border border-gray-300 rounded shadow-lg mb-6">
+      <textarea
+        className="w-full p-3 mb-3 border border-gray-300 rounded"
+        rows="3"
+        placeholder="Add a review..."
+        value={newReview}
+        onChange={(e) => setNewReview(e.target.value)}
+      />
+      <input
+        className="w-full p-3 mb-3 border border-gray-300 rounded"
+        type="text"
+        placeholder="Country"
+        value={country}
+        onChange={(e) => setCountry(e.target.value)}
+      />
+      <button className="bg-custom-blue text-white py-2 px-4 rounded hover:bg-white hover:text-blue-600" onClick={handleAddReview}>Submit Review</button>
+    </div>
+  ) : (
+    <p className="text-gray-500">Please log in to submit a review.</p>
+  )}
+  <div className="max-w-5xl mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
+    {topReviews.length > 0 ? (
+      topReviews.map((review, index) => (
+        <div key={index} className="bg-blue-100 shadow-lg rounded-lg flex flex-col items-center relative overflow-hidden">
+          <div className="bg-custom-green rounded-t-lg w-full py-4 flex flex-col items-center">
+            <img src={review.user.photo} alt={review.user.name} className="h-14 w-14 rounded-full bg-white p-1" />
           </div>
-        ) : (
-          <p className="text-gray-500">Please log in to submit a review.</p>
-        )}
-        <div className="max-w-5xl mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {topReviews.length > 0 ? (
-            topReviews.map((review, index) => (
-              <div key={index} className="bg-blue-100 shadow-lg rounded-lg flex flex-col items-center relative overflow-hidden">
-                
-                <div className="bg-custom-green rounded-t-lg w-full py-4 flex flex-col items-center">
-                  <Image src={review.user.photo} alt={review.user.name} className="rounded-full bg-white p-1" width={56} height={56} />
-                </div>
-                <div className="p-4 text-center">
-                  <p className="text-sm text-gray-700 italic mb-4">
-                    "{review.text.length > 100 ? review.text.substring(0, 100) + '...' : review.text}"
-                  </p>
-                  {review.text.length > 100 && (
-                    <button className="text-blue-500 mt-2" onClick={() => openModal(review)}>
-                      Read More
-                    </button>
-                  )}
-                </div>
-                <div className="w-full bg-custom-green rounded-b-lg py-2 text-black text-sm flex flex-col items-center">
-                  <p className="font-bold">{review.user.name}</p>
-                  <p>{review.country}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">No reviews yet.</p>
-          )}
+          <div className="p-4 text-center">
+            <p className="text-sm text-gray-700 italic mb-4">"{review.text.length > 100 ? review.text.substring(0, 100) + '...' : review.text}"</p>
+            {review.text.length > 100 && (
+              <button className="text-blue-500 mt-2" onClick={() => openModal(review)}>
+                Read More
+              </button>
+            )}
+          </div>
+          <div className="w-full bg-custom-green rounded-b-lg py-2 text-black text-sm flex flex-col items-center">
+            <p className="font-bold">{review.user.name}</p>
+            <p>{review.country}</p>
+          </div>
         </div>
-        {reviews.length > visibleReviews && (
-          <button className="mt-5 text-blue-500 hover:underline" onClick={handleLoadMore}>
-            See More Reviews
-          </button>
-        )}
-      </div>
+      ))
+    ) : (
+      <p className="text-gray-500">No reviews yet.</p>
+    )}
+  </div>
+  {reviews.length > visibleReviews && (
+    <button className="mt-5 text-blue-500 hover:underline" onClick={handleLoadMore}>
+      See More Reviews
+    </button>
+  )}
+</div>
 
-      <div
-        className="relative w-full h-96 mt-10 flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/donload.jpg')" }}
-      >
+      <div className="relative w-full h-96 mt-10 flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/donload.jpg')" }}>
         <p className="text-2xl font-light text-white">Experience the difference with our premium service.</p>
-        <button
-          className="mt-5 bg-custom-blue text-white py-4 px-8 text-lg hover:bg-white hover:text-black"
-          onClick={() => window.location.href = '/contact'}
-        >
-          CONTACT US
-        </button>
+        <button className="mt-5 bg-custom-blue text-white py-4 px-8 text-lg hover:bg-white hover:text-black" onClick={() => window.location.href = '/contact'}>CONTACT US</button>
       </div>
 
       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-      <Image src="/9798.png" alt="Footer Logo" className="h-12 mb-3" width={48} height={48} />
-       <p>© 2023 AHANSA Car Services. All rights reserved.</p>
+        <img src="/9798.png" alt="Footer Logo" className="h-12 mb-2" />
+        <p className="text-sm text-black">&copy; 2024 ABCD Taxi Service. All rights reserved.</p>
       </footer>
 
-      {modalOpen && selectedReview && (
- 
- <Modal isOpen={modalOpen} onClose={closeModal}>
-    <h2 className="text-xl font-semibold mb-4">{selectedReview.user.name}'s Review</h2>
-    <p className="text-gray-700 italic">{selectedReview.text}</p>
-    <p className="mt-4 text-sm text-gray-500">{selectedReview.country}</p>
-  </Modal>
-)}
-
+      <Modal
+        isOpen={modalOpen}
+        onClose={closeModal}
+        review={selectedReview}
+      />
     </>
   );
 }

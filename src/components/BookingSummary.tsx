@@ -3,6 +3,25 @@ import { Container, Typography, Grid } from '@mui/material';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 
+interface BookingFormData {
+  bookingId?: string;
+  pickupLocation?: string;
+  dropLocation?: string;
+  dateTime?: string;
+  firstName?: string;
+  lastName?: string;
+  title?: string;
+  email?: string;
+  idNumber?: string;
+  mobileNumber?: string;
+  selectedVehicle?: {
+    name: string;
+  };
+  vehiclePrice?: number;
+  paymentMethod?: string;
+}
+
+
 const SummaryContainer = styled(Container)`
   padding: 20px;
   background: #f7f9fc;
@@ -35,11 +54,12 @@ const ItemContent = styled(Typography)`
   color: #666666;
 `;
 
-const formatDateTime = (dateTime) => {
+const formatDateTime = (dateTime: string | undefined): string => {
   return dateTime ? dayjs(dateTime).format('YYYY-MM-DD HH:mm') : 'N/A';
 };
 
-const BookingSummary = ({ formData = {} }) => {
+
+const BookingSummary = ({ formData = {} as BookingFormData }) => {
   return (
     <SummaryContainer>
       <SummaryHeader variant="h4" gutterBottom>Booking Summary</SummaryHeader>
@@ -82,5 +102,6 @@ const BookingSummary = ({ formData = {} }) => {
     </SummaryContainer>
   );
 };
+
 
 export default BookingSummary;

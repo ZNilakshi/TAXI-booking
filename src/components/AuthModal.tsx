@@ -37,8 +37,7 @@ const GoogleIcon = (
   </svg>
 );
 
-
-const AuthModal = ({ closeModal }) => {
+const AuthModal = ({ closeModal }: { closeModal: () => void }) => {
   const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
   const [isLogin, setIsLogin] = useState(true);
@@ -46,15 +45,15 @@ const AuthModal = ({ closeModal }) => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email);
-  };
+  const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  return emailRegex.test(email);
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password?.value;
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const email = e.currentTarget.email.value;
+  const password = e.currentTarget.password?.value;
 
     if (!isValidEmail(email)) {
       setError("Email is invalid");

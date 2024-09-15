@@ -46,19 +46,20 @@ const MainContent = styled.main`
   
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  background-image: url("/1.jpg"); /* Add the path to your image */
-  background-size: cover; /* Ensure the image covers the entire area */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-image: url("/1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 const ProfileContainer = styled.div`
   display: flex;
-  justify-content: center; /* Center horizontally */
+  justify-content: center;
   align-items: center;
   min-height: 80vh;
   text-align: center;
 `;
+
 const ProfileCard = styled.div`
   display: inline-block;
   padding: 30px;
@@ -78,7 +79,7 @@ const Avatar = styled.img`
   height: 120px;
   border-radius: 50%;
   margin-bottom: 20px;
-   border: 4px solid #2c3e50;
+  border: 4px solid #2c3e50;
 `;
 
 const UserName = styled.h2`
@@ -175,15 +176,13 @@ export default function AdminPage() {
 }
 
 const AdminProfile = ({ session }) => (
- 
   <ProfileContainer>
      {session ? (
       <ProfileCard>
         <Avatar src={session.user.image || "profile-image-url"} alt="Profile" />
         <UserName>{session.user.name || "Admin Name"}</UserName>
         <UserEmail>{session.user.email || "admin@example.com"}</UserEmail>
-        <SectionTitle>Admin Profile</SectionTitle> {/* Display "Admin Profile" explicitly */}
-       
+        <SectionTitle>Admin Profile</SectionTitle>
       </ProfileCard>
     ) : (
       <p>Loading...</p>
@@ -214,26 +213,19 @@ const Users = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    
     <div>
-      <br></br>
-      <br></br>
-      
+      <br></br><br></br>
       <SectionTitle>Users</SectionTitle>
       <Table>
         <thead>
           <tr>
-            <TableHeader></TableHeader>
-            <TableHeader></TableHeader>
-            <TableHeader>Email</TableHeader>
+             <TableHeader>Email</TableHeader>
             <TableHeader>Role</TableHeader>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.role}</TableCell>
             </tr>
@@ -276,18 +268,26 @@ const Bookings = () => {
         <thead>
           <tr>
             <TableHeader>Booking ID</TableHeader>
+            <TableHeader>Name</TableHeader>
+            <TableHeader>Contact Number</TableHeader>
             <TableHeader>Pickup Location</TableHeader>
             <TableHeader>Dropoff Location</TableHeader>
             <TableHeader>Date & Time</TableHeader>
+            <TableHeader>Vehicle</TableHeader>
+            <TableHeader>Payment Method</TableHeader>
           </tr>
         </thead>
         <tbody>
           {bookings.map((booking) => (
             <tr key={booking.bookingId}>
               <TableCell>{booking.bookingId}</TableCell>
+              <TableCell>{`${booking.firstName} ${booking.lastName}` || "Unknown"}</TableCell> {/* Combine first and last name */}
+              <TableCell>{booking.mobileNumber || "Unknown"}</TableCell> {/* Contact Number */}
               <TableCell>{booking.pickupLocation}</TableCell>
               <TableCell>{booking.dropLocation}</TableCell>
-              <TableCell>{booking.dateTime}</TableCell>
+              <TableCell>{new Date(booking.dateTime).toLocaleString()}</TableCell>
+              <TableCell>{booking.selectedVehicle?.name || "Unknown Vehicle"}</TableCell>
+              <TableCell>{booking.paymentMethod || "Unknown"}</TableCell>
             </tr>
           ))}
         </tbody>
@@ -295,6 +295,7 @@ const Bookings = () => {
     </div>
   );
 };
+
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
@@ -320,13 +321,12 @@ const Messages = () => {
 
   return (
     <div>
-      <br></br>
-      <br></br>
+      <br></br><br></br>
       <SectionTitle>Messages</SectionTitle>
       <Table>
         <thead>
           <tr>
-              <TableHeader>Name</TableHeader>
+            <TableHeader>Name</TableHeader>
             <TableHeader>Email</TableHeader>
             <TableHeader>Message</TableHeader>
           </tr>
@@ -334,7 +334,6 @@ const Messages = () => {
         <tbody>
           {messages.map((message) => (
             <tr key={message.id}>
-              <TableCell>{message.id}</TableCell>
               <TableCell>{message.name}</TableCell>
               <TableCell>{message.email}</TableCell>
               <TableCell>{message.message}</TableCell>

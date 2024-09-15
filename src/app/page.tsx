@@ -9,7 +9,11 @@ import Image from "next/image"; // Use next/image for optimized images
 interface ArrowProps {
   onClick?: () => void;
 }
-
+interface Slide {
+  image: string;
+  title: string;
+  description: string;
+}
 const NextArrow = (props: ArrowProps) => {
   const { onClick } = props;
   return (
@@ -34,7 +38,7 @@ const PrevArrow = (props: ArrowProps) => {
   );
 };
 
-const ServiceSlider = ({ slides }) => {
+const ServiceSlider = ({ slides }: { slides: Slide[] }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -67,7 +71,7 @@ const ServiceSlider = ({ slides }) => {
   );
 };
 
-const VehicleSlider = ({ vehicleImages }) => {
+const VehicleSlider = ({ vehicleImages }: { vehicleImages: string[] }) => {
   const vehicleSettings = {
     dots: true,
     infinite: true,
@@ -157,7 +161,7 @@ export default function Home() {
       <Navbar />
       <div className="relative w-full py-20 text-center text-white flex flex-col items-center">
         <h1 className="mt-40 text-7xl font-semibold text-blue">AHASNA Car Services</h1>
-        <h2 className="mt-10 text-3xl font-light">SEATTLE'S PREMIUM TRANSPORTATION COMPANY</h2>
+        <h2 className="mt-10 text-3xl font-light">SEATTLE&#39;S PREMIUM TRANSPORTATION COMPANY</h2>
         <div className="flex gap-5 mt-10 mb-20 py-4 px-10">
           <button
             className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-black"
@@ -173,7 +177,7 @@ export default function Home() {
           </button>
         </div>
         <div className="max-w-3xl mx-auto mt-1 p-1 text-black bg-opacity-80 rounded-lg">
-          <p className="text-4xl font-light">SEATTLE'S SPECIAL TRANSPORTATION SERVICES</p>
+          <p className="text-4xl font-light">SEATTLE&#39;S SPECIAL TRANSPORTATION SERVICES</p>
         </div>
         <div className="w-11/12 mt-10 mx-auto">
           <ServiceSlider slides={serviceSlides} />

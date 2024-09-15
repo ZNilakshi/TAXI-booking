@@ -92,13 +92,24 @@ export async function POST(request) {
 }
 
 // GET request handler
-export async function GET() {
+export async function GET(request) {  // Use 'request' instead of 'req'
   try {
     await client.connect();
     const database = client.db('bookings');
     const bookings = database.collection('bookings');
 
-    const results = await bookings.find({}).toArray(); // Fetch all bookings
+    // Extract user email from the query params
+    const { searchParams } = new URL(request.url);  // Use 'request.url' here
+    const email = searchParams.get('email');
+
+    let results;
+    if (email) {
+      // Fetch bookings for the specified email
+      results = await bookings.find({ email }).toArray();
+    } else {
+      // Fetch all bookings if no email is provided (fallback)
+      results = await bookings.find({}).toArray();
+    }
 
     return NextResponse.json(results, { status: 200 });
   } catch (error) {
