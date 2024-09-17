@@ -55,11 +55,11 @@ const MultiStepForm = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     pickupLocation: '',
-    pickupCoords: null,
+    pickupCoords: null as [number, number] | null,
     dropLocation: '',
-    dropCoords: null,
-    dateTime: null,
-    selectedVehicle: null,
+    dropCoords: null as [number, number] | null,
+    dateTime: null as string | null,
+    selectedVehicle: null as string | null,
     firstName: '',
     lastName: '',
     title: '',
@@ -70,7 +70,7 @@ const MultiStepForm = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleFormDataChange = (newData) => {
+  const handleFormDataChange = (newData: Partial<typeof formData>) => {
     setFormData((prevData) => ({ ...prevData, ...newData }));
   };
 
@@ -81,12 +81,12 @@ const MultiStepForm = () => {
     return `BOOK-${datePart}-${randomPart}`;
   };
 
-  const getStepContent = (stepIndex) => {
+ const getStepContent = (stepIndex: number) => {
     switch (stepIndex) {
       case 0:
         return <RideDetails formData={formData} handleFormDataChange={handleFormDataChange} />;
       case 1:
-        return <VehicleSelection formData={formData} handleFormDataChange={handleFormDataChange} />;
+        return <VehicleSelection formData={formData} handleFormDataChange={handleFormDataChange} onNext={() => setActiveStep(activeStep + 1)} onPrevious={() => setActiveStep(activeStep - 1)} />;
       case 2:
         return <ContactDetails formData={formData} handleFormDataChange={handleFormDataChange} />;
       case 3:
@@ -127,37 +127,6 @@ const MultiStepForm = () => {
     }
   };
 
-  useEffect(() => {
-    const isStepComplete = () => {
-      switch (activeStep) {
-        case 0:
-          return formData.pickupLocation && formData.dropLocation && formData.dateTime;
-        case 1:
-          return formData.selectedVehicle;
-        case 2:
-          return formData.firstName && formData.lastName && formData.mobileNumber;
-        case 3:
-          return formData.paymentMethod;
-        case 4:
-          return true; // No specific completion check needed for the summary
-        default:
-          return false;
-      }
-    };
-
-    if (isStepComplete()) {
-      if (activeStep < steps.length - 1) {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      } else if (activeStep === steps.length - 2) {
-        // If we're on the second-to-last step, generate the booking ID before moving to the summary
-        if (!formData.bookingId) {
-          const bookingId = generateBookingId();
-          setFormData((prevData) => ({ ...prevData, bookingId }));
-        }
-      }
-    }
-  }, [formData, activeStep]);
-
   return (
     <Container>
       <StepperContainer>
@@ -177,18 +146,13 @@ const MultiStepForm = () => {
         ))}
         {activeStep === steps.length - 1 && (
           <div>
-            {!isSubmitted ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={saveFormData}
-              >
-                Submit
-              </Button>
-            ) : (
-              <div>Booking successful. Confirmation message will be sent to your email.</div>
-            )}
+            <Button onClick={saveFormData}>Submit</Button>
           </div>
+        )}
+        {activeStep < steps.length - 1 && (
+          <Button onClick={() => setActiveStep((prevStep) => prevStep + 1)}>
+            Next
+          </Button>
         )}
       </FormContainer>
     </Container>

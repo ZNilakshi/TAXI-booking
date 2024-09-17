@@ -3,13 +3,23 @@ import { useSession, signOut } from 'next-auth/react';
 import { useState } from 'react';
 import AuthModal from '../components/AuthModal';
 import LogoutConfirmation from '../components/LogoutConfirmation';
+import Image from 'next/image'; // Import Next.js Image component
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      role?: string; // Add role field here
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
 export default function Navbar() {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false); // State for services dropdown
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -30,8 +40,15 @@ export default function Navbar() {
   return (
     <>
       <nav className="w-full flex justify-between items-center py-2 bg-black bg-opacity-50 fixed top-0 z-10">
-        <img src="/9798.png" alt="Logo" className="h-12 cursor-pointer ml-2" onClick={() => window.location.href = '/'} />
-        
+      <Image 
+  src="/9798.png" 
+  alt="Logo" 
+  className="h-12 cursor-pointer ml-2" 
+  width={48} 
+  height={48} 
+  onClick={() => window.location.href = '/'} 
+/>
+
         <div className="flex items-center space-x-6 mr-2">
           <a href="/" className="text-white cursor-pointer hover:underline">Home</a>
           <a href="/about" className="text-white cursor-pointer hover:underline">About</a>
@@ -39,16 +56,15 @@ export default function Navbar() {
           <a href="/contact" className="text-white cursor-pointer hover:underline">Contact</a>
           <a href="/services" className="text-white cursor-pointer hover:underline">Services</a>
 
-          {/* Services Dropdown */}
-         
-
           {/* User Authentication */}
-          {session ? (
+          {session?.user ? (
             <div className="relative">
-              <img
-                src={session.user.image}
+              <Image
+                src={session.user.image || '/default-profile.png'}
                 alt="Profile"
-                className="h-10 w-10 rounded-full cursor-pointer"
+                width={40}
+                height={40}
+                className="rounded-full cursor-pointer"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               />
               {isMenuOpen && (

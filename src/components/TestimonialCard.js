@@ -2,7 +2,7 @@
 export default function TestimonialCard({ review }) {
     return (
       <div className="bg-white p-8 rounded-xl shadow-md flex flex-col items-center text-center max-w-md mx-auto">
-        <img
+        <image
           src={review.user.photo}
           alt={review.user.name}
           className="w-24 h-24 rounded-full border-4 border-teal-500 mb-4"
