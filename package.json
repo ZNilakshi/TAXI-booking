@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "vercel build --legacy-peer-deps",
+    "build": "npx vercel build --legacy-peer-deps",
     "start": "next start",
     "lint": "next lint"
   },
