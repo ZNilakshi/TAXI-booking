@@ -9,4 +9,5 @@ const config = withBundleAnalyzer({
   },
 });
 
+// Export the config
 export default config;
