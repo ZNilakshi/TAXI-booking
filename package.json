@@ -15,11 +15,19 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
+<<<<<<< HEAD
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/x-date-pickers": "^7.8.0",
     "@next/bundle-analyzer": "^14.2.11",
     "@reach/combobox": "^0.18.0",
+=======
+   
+    "@mui/icons-material": "^5.16.7",
+    "@mui/material": "^5.16.7",
+    "@mui/x-date-pickers": "^7.8.0",
+   
+>>>>>>> a2c39441f0149cac09f25d45f15dcf12931fe7a4
     "@react-google-maps/api": "^2.19.3",
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
