@@ -1,5 +1,5 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
-import { Account, User as NextAuthUser } from "next-auth";
+import NextAuth from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
@@ -7,7 +7,7 @@ import User from "@/models/User";
 import connect from "@/utils/db";
 
 // Auth options configuration
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -17,9 +17,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
+        if (!credentials) {
+          return null;
+        }
 
-        await connect(); // Ensure DB is connected
+        await connect();  // Ensure DB is connected
 
         try {
           const user = await User.findOne({ email: credentials.email });
@@ -42,7 +44,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account }: { user: NextAuthUser; account: Account }) {
+    async signIn({ user, account }) {
       await connect();
 
       if (account.provider === "credentials") {
@@ -54,7 +56,6 @@ export const authOptions: NextAuthOptions = {
           const existingUser = await User.findOne({ email: user.email });
           
           if (!existingUser) {
-            // Create a new user if not found in the DB
             const newUser = new User({
               email: user.email,
               role: "user", // Assign default role to new users
@@ -68,21 +69,21 @@ export const authOptions: NextAuthOptions = {
           return true;
         } catch (error) {
           console.error("Error in Google sign-in:", error);
-          return false; // Return false if something goes wrong
+          return false;
         }
       }
 
-      return false; // Return false if provider is neither credentials nor google
+      return false;
     },
-    async jwt({ token, user }: { token: any; user?: NextAuthUser }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.role = user.role; // Attach role to the token
+        token.role = user.role;
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       if (token) {
-        session.user.role = token.role; // Attach role from token to the session
+        session.user.role = token.role;
       }
       return session;
     },
