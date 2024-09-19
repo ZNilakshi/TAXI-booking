@@ -224,20 +224,11 @@ export default function About() {
 
       {/* Modal for review */}
       {modalOpen && selectedReview && (
-        <Modal isOpen={modalOpen} onClose={closeModal} review={selectedReview}>
-          <div className="p-4">
-            <Image
-              src={selectedReview.user.photo}
-              alt={selectedReview.user.name}
-              width={56}
-              height={56}
-              className="rounded-full mb-4"
-            />
-            <h3 className="text-lg font-semibold mb-2">{selectedReview.user.name}</h3>
-            <p className="text-gray-600 mb-4">{selectedReview.country}</p>
-            <p>{selectedReview.text}</p>
-          </div>
-        </Modal>
+        <Modal 
+          isOpen={modalOpen} 
+          onClose={closeModal} 
+          review={selectedReview} 
+        />
       )}
     </>
   );
