@@ -1,4 +1,5 @@
-"use client";
+// src/app/about/page.tsx
+"use client"; 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Navbar from "../../components/Navbar";
@@ -8,16 +9,13 @@ import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import Image from 'next/image';
 
-
 export default function About() {
   const { data: session } = useSession();
   const [bgOpacity, setBgOpacity] = useState(1);
   const [reviews, setReviews] = useState<any[]>([]);
   const [newReview, setNewReview] = useState("");
   const [country, setCountry] = useState("");
-  const [expandedReviewIndex, setExpandedReviewIndex] = useState<number | null>(
-    null
-  );
+  const [expandedReviewIndex, setExpandedReviewIndex] = useState<number | null>(null);
   const [visibleReviews, setVisibleReviews] = useState(10);
   const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
   const [selectedReview, setSelectedReview] = useState<any>(null); // State for selected review
@@ -121,13 +119,13 @@ export default function About() {
         <div className="w-4/5 mt-12 p-10 mx-auto"></div>
         <div className="flex gap-12 mt-11 p-20">
           <div className="flex items-center">
-          <Image
-  src="/ap.jpg"
-  alt="Image 1"
-  width={500}
-  height={300}
-  className="w-full rounded-lg"
-/>
+            <Image
+              src="/ap.jpg"
+              alt="Image 1"
+              width={500}
+              height={300}
+              className="w-full rounded-lg"
+            />
           </div>
           <div className="flex flex-col justify-center max-w-xs font-light text-3xl">
             <p className="text-black text-4xl mb-5 font-light">ABOUT US</p>
@@ -149,7 +147,7 @@ export default function About() {
           <div className="w-full max-w-2xl bg-white p-6 border border-gray-300 rounded shadow-lg mb-6">
             <textarea
               className="w-full p-3 mb-3 border border-gray-300 rounded"
-              rows={3} // Fix for the 'rows' error
+              rows={3}
               placeholder="Add a review..."
               value={newReview}
               onChange={(e) => setNewReview(e.target.value)}
@@ -179,23 +177,22 @@ export default function About() {
                 className="bg-blue-100 shadow-lg rounded-lg flex flex-col items-center relative overflow-hidden"
               >
                 <div className="bg-custom-green rounded-t-lg w-full py-4 flex flex-col items-center">
-                <Image
-                    src={review.user.photo || '/default-user.jpg'} // Provide a fallback if there's no photo
+                  <Image
+                    src={review.user.photo || '/default-user.jpg'}
                     alt={review.user.name}
-                    width={56} // height and width should be set
+                    width={56}
                     height={56}
                     className="h-14 w-14 rounded-full bg-white p-1"
                   />
                 </div>
                 <div className="p-4 text-center">
-                <p className="text-sm text-gray-700 italic mb-4">
-                &quot;
-                      {review.text.length > 100
-                        ? review.text.substring(0, 100) + "&quot;..."
-                        : review.text}
-                     &quot;
-                    </p>
-
+                  <p className="text-sm text-gray-700 italic mb-4">
+                    &quot;
+                    {review.text.length > 100
+                      ? review.text.substring(0, 100) + "&quot;..."
+                      : review.text}
+                    &quot;
+                  </p>
                   {review.text.length > 100 && (
                     <button
                       className="text-blue-500 mt-2"
@@ -212,63 +209,36 @@ export default function About() {
               </div>
             ))
           ) : (
-            <p className="text-gray-500">No reviews yet.</p>
+            <p>No reviews yet.</p>
           )}
         </div>
-        {reviews.length > visibleReviews && (
+        {visibleReviews < reviews.length && (
           <button
-            className="mt-5 text-blue-500 hover:underline"
+            className="bg-custom-blue text-white mt-5 py-2 px-6 rounded hover:bg-white hover:text-blue-600"
             onClick={handleLoadMore}
           >
-            See More Reviews
+            Load More
           </button>
         )}
       </div>
 
-      <div
-        className="relative w-full h-96 mt-10 flex flex-col items-center justify-center text-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/donload.jpg')" }}
-      >
-        <p className="text-2xl font-light text-white">
-          Experience the difference with our premium service.
-        </p>
-        <button
-          className="mt-5 bg-custom-blue text-white py-4 px-8 text-lg hover:bg-white hover:text-black"
-          onClick={() => (window.location.href = "/contact")}
-        >
-          CONTACT US
-        </button>
-      </div>
-
-      <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-      <Image
-  src="/9798.png"
-  alt="Footer Logo"
-  width={48}  // Specify the width of the image
-  height={48} // Specify the height of the image
-  className="h-12 mb-2"
-/>
-        <p className="text-sm">Colombo - Sri Lanka © 2023 Ahansa. All rights reserved.</p>
-      </footer>
-
+      {/* Modal for review */}
       {modalOpen && selectedReview && (
-  <Modal isOpen={modalOpen} onClose={closeModal} review={selectedReview}>
-    <div className="p-4">
-      <Image
-        src={selectedReview.user.photo}
-        alt={selectedReview.user.name}
-        width={56}
-        height={56}
-        className="rounded-full mb-4"
-      />
-      <h3 className="text-lg font-semibold mb-2">{selectedReview.user.name}</h3>
-      <p className="text-gray-600 mb-4">{selectedReview.country}</p>
-      <p>{selectedReview.text}</p>
-    </div>
-  </Modal>
-)}
-
-
+        <Modal isOpen={modalOpen} onClose={closeModal} review={selectedReview}>
+          <div className="p-4">
+            <Image
+              src={selectedReview.user.photo}
+              alt={selectedReview.user.name}
+              width={56}
+              height={56}
+              className="rounded-full mb-4"
+            />
+            <h3 className="text-lg font-semibold mb-2">{selectedReview.user.name}</h3>
+            <p className="text-gray-600 mb-4">{selectedReview.country}</p>
+            <p>{selectedReview.text}</p>
+          </div>
+        </Modal>
+      )}
     </>
   );
 }
