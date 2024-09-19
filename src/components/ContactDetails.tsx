@@ -24,12 +24,20 @@ const ContactDetails = ({ formData, handleFormDataChange, onNext, onPrevious }) 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (session && session.user) {
-      const [firstName, lastName] = session.user.name.split(' '); // Assuming the name is in "First Last" format
+    if (session && session.user && typeof session.user.name === 'string' && session.user.name.trim() !== '') {
+      const nameParts = session.user.name.split(' ');
+      const firstName = formData.firstName || nameParts[0] || '';
+      const lastName = formData.lastName || nameParts[1] || ''; // Handles cases where there is no last name
       handleFormDataChange({
-        firstName: formData.firstName || firstName || '',
-        lastName: formData.lastName || lastName || '',
+        firstName,
+        lastName,
         email: formData.email || session.user.email || '',
+      });
+    } else {
+      handleFormDataChange({
+        firstName: formData.firstName || '',
+        lastName: formData.lastName || '',
+        email: formData.email || session?.user?.email || '',
       });
     }
   }, [session]);
