@@ -105,7 +105,7 @@ const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       // Attach role to the session user
       if (token) {
-        session.user.role = token.role;
+        session.user.role = token.role as string;
       }
       return session;
     },
