@@ -2,9 +2,14 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGO_URL;
+
+if (!uri) {
+  throw new Error("MONGO_URL is not defined in the environment variables");
+}
+
 const client = new MongoClient(uri);
 
-export async function POST(request) {
+export async function POST(request: { json: () => PromiseLike<{ name: any; email: any; message: any; }> | { name: any; email: any; message: any; }; }) {
   try {
     const { name, email, message } = await request.json();
 
