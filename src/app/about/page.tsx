@@ -30,14 +30,14 @@ export default function About() {
     if (session && session.user && newReview.trim() !== "" && country.trim() !== "") {
       const review = {
         user: {
-          email: session.user.email,
-          name: session.user.name,
-          photo: session.user.image,
+          email: session.user.email || "Unknown Email",
+          name: (session.user as any).name || "Anonymous", // Using 'as any' to bypass type error
+          photo: (session.user as any).image || "/default-user.jpg", // Fallback for missing image
         },
         text: newReview,
         country,
       };
-
+    
       try {
         const response = await axios.post("/api/reviews", review);
         setReviews([response.data, ...reviews]);
@@ -47,6 +47,8 @@ export default function About() {
         console.error("Error adding review:", error);
       }
     }
+    
+    
   };
 
   useEffect(() => {
