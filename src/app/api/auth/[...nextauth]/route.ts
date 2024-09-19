@@ -45,6 +45,11 @@ const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
+      // Ensure account is not null or undefined before proceeding
+      if (!account) {
+        return false;
+      }
+
       await connect();
 
       if (account.provider === "credentials") {
@@ -76,12 +81,14 @@ const authOptions: NextAuthOptions = {
       return false;
     },
     async jwt({ token, user }) {
+      // Include role information in the token if the user exists
       if (user) {
         token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
+      // Attach role to the session user
       if (token) {
         session.user.role = token.role;
       }
