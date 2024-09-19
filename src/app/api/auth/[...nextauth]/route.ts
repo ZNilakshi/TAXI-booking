@@ -17,11 +17,9 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) {
-          return null;
-        }
+        if (!credentials) return null;
 
-        await connect();  // Ensure DB is connected
+        await connect(); // Ensure DB is connected
 
         try {
           const user = await User.findOne({ email: credentials.email });
@@ -80,20 +78,18 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role; // Attach role to the token
       }
-      console.log("JWT Callback", token);
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
       if (token) {
         session.user.role = token.role; // Attach role from token to the session
       }
-      console.log("Session Callback", session);
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Export the handler to be used with the app directory routing in Next.js
-export const handler = NextAuth(authOptions);
+// Export the handler to be used with the app directory routing in Next.js 13+
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
