@@ -38,6 +38,7 @@ export default function About() {
         country,
       };
     
+    
       try {
         const response = await axios.post("/api/reviews", review);
         setReviews([response.data, ...reviews]);
