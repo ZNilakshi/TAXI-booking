@@ -14,8 +14,11 @@ let clientPromise: Promise<MongoClient> | null = null;
 // Ensure the MongoClient is initialized only once
 async function initClient() {
   if (!client) {
-    client = new MongoClient(uri);
-    clientPromise = client.connect();
+      if (!uri) {
+          throw new Error("MongoDB URI is not defined.");
+      }
+      client = new MongoClient(uri);
+      clientPromise = client.connect();
   }
   return clientPromise;
 }
