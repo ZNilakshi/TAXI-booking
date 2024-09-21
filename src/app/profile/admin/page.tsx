@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSession, signOut } from "next-auth/react";
+import { useSession,  } from "next-auth/react";
 import Navbar from "../../../components/Navbar";
+import { Session } from 'next-auth';
 
 // Styled Components
 const Container = styled.div`
