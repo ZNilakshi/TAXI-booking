@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useSession, signOut } from "next-auth/react";
 import Navbar from "../../../components/Navbar";
 
+// Styled Components
 const Container = styled.div`
   display: flex;
   min-height: 100vh;
@@ -19,7 +20,11 @@ const Sidebar = styled.aside`
   bottom: 0;
 `;
 
-const SidebarItem = styled.button`
+interface SidebarItemProps {
+  active: boolean;
+}
+
+const SidebarItem = styled.button<SidebarItemProps>`
   display: block;
   width: 100%;
   padding: 15px;
@@ -43,7 +48,6 @@ const MainContent = styled.main`
   margin-left: 240px;
   padding: 40px;
   background: #ffffff;
-  
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   background-image: url("/1.jpg");
@@ -124,11 +128,12 @@ const TableCell = styled.td`
   color: #2c3e50;
 `;
 
+// Main Admin Page Component
 export default function AdminPage() {
   const { data: session } = useSession();
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState<string>("profile");
 
-  const handleNavClick = (tab) => {
+  const handleNavClick = (tab: string) => {
     setActiveTab(tab);
   };
 
@@ -175,9 +180,10 @@ export default function AdminPage() {
   );
 }
 
+// Profile Component
 const AdminProfile = ({ session }) => (
   <ProfileContainer>
-     {session ? (
+    {session ? (
       <ProfileCard>
         <Avatar src={session.user.image || "profile-image-url"} alt="Profile" />
         <UserName>{session.user.name || "Admin Name"}</UserName>
@@ -190,6 +196,7 @@ const AdminProfile = ({ session }) => (
   </ProfileContainer>
 );
 
+// Users Component
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -214,12 +221,13 @@ const Users = () => {
 
   return (
     <div>
-      <br></br><br></br>
+      <br></br>
+      <br></br>
       <SectionTitle>Users</SectionTitle>
       <Table>
         <thead>
           <tr>
-             <TableHeader>Email</TableHeader>
+            <TableHeader>Email</TableHeader>
             <TableHeader>Role</TableHeader>
           </tr>
         </thead>
@@ -236,6 +244,7 @@ const Users = () => {
   );
 };
 
+// Bookings Component
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -281,8 +290,8 @@ const Bookings = () => {
           {bookings.map((booking) => (
             <tr key={booking.bookingId}>
               <TableCell>{booking.bookingId}</TableCell>
-              <TableCell>{`${booking.firstName} ${booking.lastName}` || "Unknown"}</TableCell> {/* Combine first and last name */}
-              <TableCell>{booking.mobileNumber || "Unknown"}</TableCell> {/* Contact Number */}
+              <TableCell>{`${booking.firstName} ${booking.lastName}`}</TableCell>
+              <TableCell>{booking.mobileNumber || "Unknown"}</TableCell>
               <TableCell>{booking.pickupLocation}</TableCell>
               <TableCell>{booking.dropLocation}</TableCell>
               <TableCell>{new Date(booking.dateTime).toLocaleString()}</TableCell>
@@ -296,7 +305,7 @@ const Bookings = () => {
   );
 };
 
-
+// Messages Component
 const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -321,7 +330,8 @@ const Messages = () => {
 
   return (
     <div>
-      <br></br><br></br>
+      <br></br>
+      <br></br>
       <SectionTitle>Messages</SectionTitle>
       <Table>
         <thead>
@@ -345,6 +355,7 @@ const Messages = () => {
   );
 };
 
+// SignOut Component
 const SignOut = () => {
   useEffect(() => {
     signOut();
