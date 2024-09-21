@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 
+// Ensure type safety for MongoClient
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
+
 const uri = process.env.MONGO_URL;
-let client;
-let clientPromise;
 
 if (!uri) {
   throw new Error('Please add your Mongo URI to .env.local');
@@ -14,14 +16,16 @@ if (!client) {
   clientPromise = client.connect();
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const { user, text, country } = await request.json();
 
+    // Wait for the MongoDB client to connect
     await clientPromise;
     const database = client.db('reviews');
     const reviews = database.collection('reviews');
 
+    // Create a new review object
     const newReview = {
       user,
       text,
@@ -29,8 +33,10 @@ export async function POST(request) {
       createdAt: new Date(),
     };
 
+    // Insert the new review into the database
     await reviews.insertOne(newReview);
 
+    // Return the newly created review with a 201 status
     return NextResponse.json(newReview, { status: 201 });
   } catch (error) {
     console.error('Error adding review:', error);
@@ -40,12 +46,15 @@ export async function POST(request) {
 
 export async function GET() {
   try {
+    // Wait for the MongoDB client to connect
     await clientPromise;
     const database = client.db('reviews');
     const reviews = database.collection('reviews');
 
+    // Fetch all reviews, sorted by the newest first
     const allReviews = await reviews.find({}).sort({ createdAt: -1 }).toArray();
 
+    // Return the reviews with a 200 status
     return NextResponse.json(allReviews, { status: 200 });
   } catch (error) {
     console.error('Error fetching reviews:', error);
