@@ -9,6 +9,8 @@ import connect from "@/utils/db";
 declare module "next-auth" {
   interface Session {
     user: {
+      name: string;
+      image: string;
       id: string;
       email: string;
       role: string;  // Add role to the session type
