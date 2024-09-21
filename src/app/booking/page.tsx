@@ -26,7 +26,8 @@ const Booking = () => {
       {status === 'authenticated' ? (
         <MultiStepForm />
       ) : (
-        showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />
+        showAuthModal && <AuthModal closeModal={() => setShowAuthModal(false)} />
+
       )}
     </div>
   );
