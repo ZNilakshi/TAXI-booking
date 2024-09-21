@@ -179,7 +179,8 @@ export default function AdminPage() {
 }
 
 // Profile Component
-const AdminProfile = ({ session }) => (
+
+const AdminProfile = ({ session }: { session: Session | null }) => (
   <ProfileContainer>
     {session ? (
       <ProfileCard>
