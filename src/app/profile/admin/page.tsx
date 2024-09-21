@@ -165,16 +165,14 @@ export default function AdminPage() {
         >
           Messages
         </SidebarItem>
-        <SidebarItem onClick={() => handleNavClick("signout")}>
-          Sign Out
-        </SidebarItem>
+        
       </Sidebar>
       <MainContent>
         {activeTab === "profile" && <AdminProfile session={session} />}
         {activeTab === "users" && <Users />}
         {activeTab === "bookings" && <Bookings />}
         {activeTab === "messages" && <Messages />}
-        {activeTab === "signout" && <SignOut />}
+    
       </MainContent>
     </Container>
   );
@@ -185,9 +183,9 @@ const AdminProfile = ({ session }) => (
   <ProfileContainer>
     {session ? (
       <ProfileCard>
-        <Avatar src={session.user.image || "profile-image-url"} alt="Profile" />
-        <UserName>{session.user.name || "Admin Name"}</UserName>
-        <UserEmail>{session.user.email || "admin@example.com"}</UserEmail>
+        <Avatar src={session?.user?.image || "/default-profile.png"} alt="Profile" />
+        <UserName>{session?.user?.name || "Admin Name"}</UserName>
+        <UserEmail>{session?.user?.email || "admin@example.com"}</UserEmail>
         <SectionTitle>Admin Profile</SectionTitle>
       </ProfileCard>
     ) : (
@@ -198,7 +196,7 @@ const AdminProfile = ({ session }) => (
 
 // Users Component
 const Users = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<{ id: string; email: string; role: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -287,7 +285,7 @@ const Bookings = () => {
           </tr>
         </thead>
         <tbody>
-          {bookings.map((booking) => (
+        {bookings.map((booking) => (
             <tr key={booking.bookingId}>
               <TableCell>{booking.bookingId}</TableCell>
               <TableCell>{`${booking.firstName} ${booking.lastName}`}</TableCell>
@@ -355,15 +353,3 @@ const Messages = () => {
   );
 };
 
-// SignOut Component
-const SignOut = () => {
-  useEffect(() => {
-    signOut();
-  }, []);
-
-  return (
-    <ProfileContainer>
-      <SectionTitle>Signing Out...</SectionTitle>
-    </ProfileContainer>
-  );
-};
