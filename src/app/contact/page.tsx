@@ -23,11 +23,11 @@ export default function Contact() {
     };
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await fetch('/api/contact', {
@@ -98,46 +98,44 @@ export default function Contact() {
             </form>
           </div>
           <div className="flex-1 bg-white shadow-lg p-8 rounded-lg transition-transform hover:scale-105">
-  <h2 className="text-3xl font-semibold mb-5 text-custom-blue">Talk to Us</h2>
-  <div className="mb-4 flex items-center text-gray-800">
-    <FaEnvelope className="mr-2" size={20} />
-    <span className="font-semibold mr-2">Email:</span>
-    <a href="mailto:nwcarservices@icloud.com" className="text-blue-500 hover:underline">ahasnabooking@gmail.com</a>
-  </div>
-  <div className="mb-4 flex items-center text-gray-800">
-    <FaPhone className="mr-2" size={20} />
-    <span className="font-semibold mr-2">Phone Number:</span>
-    <a href="tel:+12067470485" className="text-blue-500 hover:underline">+94702610614</a>
-  </div>
-  <div className="mb-4 flex items-center text-gray-800">
-    <FaMapMarkerAlt className="mr-2" size={20} />
-    <span className="font-semibold mr-2">Headquarter:</span>
-    <p className="text-gray-800">6457 S 299th St, Auburn, WA, 98001</p>
-  </div>
-  <div className="flex flex-col items-center justify-center text-gray-800">
-  <h2 className="text-3xl font-semibold mb-5 text-custom-blue text-center">Follow Us</h2>
-  <div className="flex space-x-4">
-    <a href="https://www.facebook.com/abcdtaxiservice" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-      <FaFacebook size={30} />
-    </a>
-    <a href="https://www.youtube.com/abcdtaxiservice" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:underline">
-      <FaYoutube size={30} />
-    </a>
-    <a href="https://www.instagram.com/abcdtaxiservice" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">
-      <FaInstagram size={30} />
-    </a>
-  </div>
-</div>
-
-</div>
-
+            <h2 className="text-3xl font-semibold mb-5 text-custom-blue">Talk to Us</h2>
+            <div className="mb-4 flex items-center text-gray-800">
+              <FaEnvelope className="mr-2" size={20} />
+              <span className="font-semibold mr-2">Email:</span>
+              <a href="mailto:nwcarservices@icloud.com" className="text-blue-500 hover:underline">ahasnabooking@gmail.com</a>
+            </div>
+            <div className="mb-4 flex items-center text-gray-800">
+              <FaPhone className="mr-2" size={20} />
+              <span className="font-semibold mr-2">Phone Number:</span>
+              <a href="tel:+12067470485" className="text-blue-500 hover:underline">+94702610614</a>
+            </div>
+            <div className="mb-4 flex items-center text-gray-800">
+              <FaMapMarkerAlt className="mr-2" size={20} />
+              <span className="font-semibold mr-2">Headquarter:</span>
+              <p className="text-gray-800">6457 S 299th St, Auburn, WA, 98001</p>
+            </div>
+            <div className="flex flex-col items-center justify-center text-gray-800">
+              <h2 className="text-3xl font-semibold mb-5 text-custom-blue text-center">Follow Us</h2>
+              <div className="flex space-x-4">
+                <a href="https://www.facebook.com/abcdtaxiservice" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                  <FaFacebook size={30} />
+                </a>
+                <a href="https://www.youtube.com/abcdtaxiservice" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:underline">
+                  <FaYoutube size={30} />
+                </a>
+                <a href="https://www.instagram.com/abcdtaxiservice" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">
+                  <FaInstagram size={30} />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center py-4 bg-gray-900">
         <div className="flex space-x-6">
           <a href="https://www.facebook.com/abcdtaxiservice" className="text-white hover:text-gray-400"><FaFacebook size={30} /></a>
           <a href="https://www.youtube.com/abcdtaxiservice" className="text-white hover:text-gray-400"><FaYoutube size={30} /></a>
-         </div>
+        </div>
         <p className="text-center text-white mt-2">&copy; 2023 ABCD Taxi Service. All Rights Reserved.</p>
       </footer>
     </>
