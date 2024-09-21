@@ -1,28 +1,32 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 
-// Ensure type safety for MongoClient
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
 const uri = process.env.MONGO_URL;
 
 if (!uri) {
   throw new Error('Please add your Mongo URI to .env.local');
 }
 
-if (!client) {
-  client = new MongoClient(uri);
-  clientPromise = client.connect();
+// Define a client and clientPromise globally to avoid redeclaring.
+let client: MongoClient | null = null;
+let clientPromise: Promise<MongoClient> | null = null;
+
+// Ensure the MongoClient is initialized only once
+async function initClient() {
+  if (!client) {
+    client = new MongoClient(uri);
+    clientPromise = client.connect();
+  }
+  return clientPromise;
 }
 
 export async function POST(request: Request) {
   try {
     const { user, text, country } = await request.json();
 
-    // Wait for the MongoDB client to connect
-    await clientPromise;
-    const database = client.db('reviews');
+    // Initialize the MongoDB client
+    await initClient();
+    const database = client!.db('reviews');
     const reviews = database.collection('reviews');
 
     // Create a new review object
@@ -46,9 +50,9 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    // Wait for the MongoDB client to connect
-    await clientPromise;
-    const database = client.db('reviews');
+    // Initialize the MongoDB client
+    await initClient();
+    const database = client!.db('reviews');
     const reviews = database.collection('reviews');
 
     // Fetch all reviews, sorted by the newest first
