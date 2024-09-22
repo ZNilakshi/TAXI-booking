@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 // Define types for form data and coordinates
 interface FormData {
-  pickupCoords: [number, number];
-  dropCoords: [number, number];
-  selectedVehicle?: Vehicle;
+  pickupCoords: [number, number] | null; // Allow null
+  dropCoords: [number, number] | null;   // Allow null
+  selectedVehicle: Vehicle | null;
   vehiclePrice?: number;
 }
 

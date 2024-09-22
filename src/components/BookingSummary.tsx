@@ -5,8 +5,8 @@ import dayjs from 'dayjs';
 
 interface BookingFormData {
   bookingId?: string;
-  pickupLocation?: string;
-  dropLocation?: string;
+  pickupLocation?: string | null;
+  dropLocation?: string | null;
   dateTime?: string;
   firstName?: string;
   lastName?: string;
@@ -58,12 +58,19 @@ const formatDateTime = (dateTime: string | undefined): string => {
   return dateTime ? dayjs(dateTime).format('YYYY-MM-DD HH:mm') : 'N/A';
 };
 
+const formatPrice = (price: number | undefined): string => {
+  return price ? `$${price.toFixed(2)}` : 'N/A';
+};
 
 const BookingSummary = ({ formData = {} as BookingFormData }) => {
-  return (
+const formattedDateTime = formData.dateTime ? dayjs(formData.dateTime).format('YYYY-MM-DD HH:mm') : 'N/A';
+  
+return (
     <SummaryContainer>
-      <SummaryHeader variant="h4" gutterBottom>Booking Summary</SummaryHeader>
-      
+      <SummaryHeader variant="h4" gutterBottom>
+        Booking Summary
+      </SummaryHeader>
+
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <SummaryItem>
@@ -74,7 +81,9 @@ const BookingSummary = ({ formData = {} as BookingFormData }) => {
             <ItemTitle variant="h6">Ride Details</ItemTitle>
             <ItemContent variant="body1">Pickup Location: {formData.pickupLocation || 'N/A'}</ItemContent>
             <ItemContent variant="body1">Dropoff Location: {formData.dropLocation || 'N/A'}</ItemContent>
-            <ItemContent variant="body1">Pickup Date & Time: {formatDateTime(formData.dateTime)}</ItemContent>
+            <ItemTitle variant="h6">Pickup Date & Time</ItemTitle>
+            <ItemContent variant="body1">{formattedDateTime}</ItemContent>
+         
           </SummaryItem>
           <SummaryItem>
             <ItemTitle variant="h6">Contact Details</ItemTitle>
@@ -86,12 +95,12 @@ const BookingSummary = ({ formData = {} as BookingFormData }) => {
             <ItemContent variant="body1">Mobile Number: {formData.mobileNumber || 'N/A'}</ItemContent>
           </SummaryItem>
         </Grid>
-        
+
         <Grid item xs={12} md={6}>
           <SummaryItem>
             <ItemTitle variant="h6">Vehicle Selection</ItemTitle>
             <ItemContent variant="body1">Vehicle: {formData.selectedVehicle?.name || 'N/A'}</ItemContent>
-            <ItemContent variant="body1">Vehicle Price: ${formData.vehiclePrice?.toFixed(2) || 'N/A'}</ItemContent>
+            <ItemContent variant="body1">Vehicle Price: {formatPrice(formData.vehiclePrice)}</ItemContent>
           </SummaryItem>
           <SummaryItem>
             <ItemTitle variant="h6">Payment Method</ItemTitle>
@@ -102,6 +111,5 @@ const BookingSummary = ({ formData = {} as BookingFormData }) => {
     </SummaryContainer>
   );
 };
-
 
 export default BookingSummary;
