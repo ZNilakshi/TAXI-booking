@@ -3,9 +3,18 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar";
 
+interface Booking {
+  _id: string;
+  pickupLocation: string;
+  dropLocation: string;
+  dateTime: string;
+  // Add other relevant fields as necessary
+}
+
+
 export default function UserProfile() {
   const { data: session } = useSession();
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("profile");
 
