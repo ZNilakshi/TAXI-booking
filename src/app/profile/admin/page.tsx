@@ -243,10 +243,21 @@ const Users = () => {
     </div>
   );
 };
+interface Booking {
+  bookingId: string;
+  firstName: string;
+  lastName: string;
+  mobileNumber?: string;
+  pickupLocation: string;
+  dropLocation: string;
+  dateTime: string;
+  selectedVehicle?: { name: string };
+  paymentMethod?: string;
+}
 
 // Bookings Component
 const Bookings = () => {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -304,10 +315,15 @@ const Bookings = () => {
     </div>
   );
 };
-
+interface Message {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+}
 // Messages Component
 const Messages = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
