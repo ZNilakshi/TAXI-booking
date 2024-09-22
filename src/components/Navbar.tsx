@@ -5,16 +5,14 @@ import AuthModal from '../components/AuthModal';
 import LogoutConfirmation from '../components/LogoutConfirmation';
 import Image from 'next/image'; // Import Next.js Image component
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      role?: string; // Add role field here
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
-  }
+interface User {
+  id: string;
+  role?: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
 }
+
 export default function Navbar() {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);

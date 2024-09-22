@@ -23,7 +23,7 @@ const StepperContainer = styled.div`
   justify-content: center;
   height: 100vh;
   align-items: center;
-  position: -webkit-sticky; /* For Safari */
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
 `;
@@ -35,7 +35,7 @@ const FormContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  max-height: calc(100vh - 40px); /* Adjust based on the padding */
+  max-height: calc(100vh - 40px);
 `;
 
 const StepContent = styled.div`
@@ -44,10 +44,10 @@ const StepContent = styled.div`
 
 const StepLabelCustom = styled(StepLabel)`
   .MuiStepLabel-label {
-    font-size: 1.25rem; /* Increase font size */
+    font-size: 1.25rem;
   }
   .MuiSvgIcon-root {
-    font-size: 2rem; /* Increase icon size */
+    font-size: 2rem;
   }
 `;
 
@@ -58,21 +58,24 @@ const MultiStepForm = () => {
     pickupCoords: null,
     dropLocation: '',
     dropCoords: null,
-    dateTime: null,
-    selectedVehicle: null,
+    dateTime: undefined,
+    selectedVehicle: undefined, // Use undefined
     firstName: '',
     lastName: '',
     title: '',
     idNumber: '',
     mobileNumber: '',
     paymentMethod: '',
-    bookingId: ''
+    bookingId: '',
+    email: '',
   });
+  
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleFormDataChange = (newData) => {
+  const handleFormDataChange = (newData: Partial<typeof formData>) => {
     setFormData((prevData) => ({ ...prevData, ...newData }));
   };
+  
 
   const generateBookingId = () => {
     const now = new Date();
@@ -81,14 +84,18 @@ const MultiStepForm = () => {
     return `BOOK-${datePart}-${randomPart}`;
   };
 
-  const getStepContent = (stepIndex) => {
+  const getStepContent = (stepIndex: number) => {
     switch (stepIndex) {
       case 0:
         return <RideDetails formData={formData} handleFormDataChange={handleFormDataChange} />;
       case 1:
-        return <VehicleSelection formData={formData} handleFormDataChange={handleFormDataChange} />;
+        return <VehicleSelection formData={formData} handleFormDataChange={handleFormDataChange} handleNext={undefined} />;
       case 2:
-        return <ContactDetails formData={formData} handleFormDataChange={handleFormDataChange} />;
+        return <ContactDetails formData={formData} handleFormDataChange={handleFormDataChange} onNext={function (): void {
+          throw new Error('Function not implemented.');
+        } } onPrevious={function (): void {
+          throw new Error('Function not implemented.');
+        } } />;
       case 3:
         return <PaymentMethod formData={formData} handleFormDataChange={handleFormDataChange} />;
       case 4:
@@ -97,70 +104,63 @@ const MultiStepForm = () => {
         return 'Unknown step';
     }
   };
+  
+
 
   const saveFormData = () => {
-    if (!formData.bookingId) {
-      const bookingId = generateBookingId();
-      setFormData((prevData) => ({ ...prevData, bookingId }));
+    const bookingId = formData.bookingId || generateBookingId();
+    setFormData((prevData) => ({ ...prevData, bookingId }));
 
-      setTimeout(() => {
-        const formDataWithId = { ...formData, bookingId };
-        console.log('FormData with Booking ID:', formDataWithId);
+    const formDataWithId = { ...formData, bookingId };
+    console.log('FormData with Booking ID:', formDataWithId);
 
-        fetch('/api/bookings', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formDataWithId),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Success:', data);
-            setIsSubmitted(true);
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-            alert('Failed to save booking.');
-          });
-      }, 0);
+    fetch('/api/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formDataWithId),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+        setIsSubmitted(true);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('Failed to save booking.');
+      });
+  };
+
+  const isStepComplete = (step: number) => {
+    switch (step) {
+      case 0:
+        return formData.pickupLocation && formData.dropLocation && formData.dateTime;
+      case 1:
+        return formData.selectedVehicle;
+      case 2:
+        return formData.firstName && formData.lastName && formData.mobileNumber;
+      case 3:
+        return formData.paymentMethod;
+      default:
+        return true; // Summary step always considered complete
+    }
+  };
+  
+
+  const handleNext = () => {
+    if (isStepComplete(activeStep)) {
+      setActiveStep((prevStep) => prevStep + 1);
+    } else {
+      alert('Please complete all required fields.');
     }
   };
 
-  useEffect(() => {
-    const isStepComplete = () => {
-      switch (activeStep) {
-        case 0:
-          return formData.pickupLocation && formData.dropLocation && formData.dateTime;
-        case 1:
-          return formData.selectedVehicle;
-        case 2:
-          return formData.firstName && formData.lastName && formData.mobileNumber;
-        case 3:
-          return formData.paymentMethod;
-        case 4:
-          return true; // No specific completion check needed for the summary
-        default:
-          return false;
-      }
-    };
-    if (isStepComplete()) {
-      if (activeStep < steps.length - 1) {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      } else if (activeStep === steps.length - 2) {
-        // If we're on the second-to-last step, generate the booking ID before moving to the summary
-        if (!formData.bookingId) {
-          const bookingId = generateBookingId();
-          setFormData((prevData) => ({ ...prevData, bookingId }));
-        }
-      }
-    }
-  }, [formData, activeStep]);
   return (
     <Container>
       <StepperContainer>
         <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label) => (
+          {steps.map((label, index) => (
             <Step key={label}>
               <StepLabelCustom>{label}</StepLabelCustom>
             </Step>
@@ -168,26 +168,19 @@ const MultiStepForm = () => {
         </Stepper>
       </StepperContainer>
       <FormContainer>
-        {steps.map((label, index) => (
-          <StepContent key={label} style={{ display: activeStep >= index ? 'block' : 'none' }}>
-            {getStepContent(index)}
-          </StepContent>
-        ))}
-        {activeStep === steps.length - 1 && (
-          <div>
-            {!isSubmitted ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={saveFormData}
-              >
-                Submit
-              </Button>
-            ) : (
-              <div>Booking successful. Confirmation message will be sent to your email.</div>
-            )}
-          </div>
+        {getStepContent(activeStep)}
+        {activeStep < steps.length - 1 ? (
+          <Button variant="contained" color="primary" onClick={handleNext}>
+            {activeStep === steps.length - 2 ? 'Finish' : 'Next'}
+          </Button>
+        ) : (
+          !isSubmitted && (
+            <Button variant="contained" color="primary" onClick={saveFormData}>
+              Submit
+            </Button>
+          )
         )}
+        {isSubmitted && <div>Booking successful. Confirmation message will be sent to your email.</div>}
       </FormContainer>
     </Container>
   );
