@@ -42,7 +42,7 @@ export default function Services() {
     { name: 'Mattala Airport', link: '/mattala-airport' },
   ];
 
-  const handleLocationClick = (location) => {
+  const handleLocationClick = (location: { name: string; link: string; }) => {
     // Save selected location data in local storage or state management tool
     localStorage.setItem("selectedLocation", JSON.stringify(location));
     router.push('/booking'); // Navigate to the booking page
@@ -82,7 +82,7 @@ export default function Services() {
             {popularLocations.map((location, index) => (
               <div key={index} className="bg-custom-blue rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200">
                 <button
-                  className="block w-full p-6 flex items-center justify-between text-white font-medium hover:bg-gray-100 hover:text-custom-blue rounded-lg"
+                  className="block w-full p-6  items-center justify-between text-white font-medium hover:bg-gray-100 hover:text-custom-blue rounded-lg"
                   onClick={() => handleLocationClick(location)}
                 >
                   <span>{location.name}</span>
