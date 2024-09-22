@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Container, TextField, Typography, MenuItem, FormControl, InputLabel, Select, Grid, Button } from '@mui/material';
 import styled from 'styled-components';
 import { useSession } from 'next-auth/react';
+import { SelectChangeEvent } from '@mui/material'; // Import SelectChangeEvent type
 
-
+// Define the formData type
 interface FormData {
   firstName: string;
   lastName: string;
@@ -13,6 +14,7 @@ interface FormData {
   mobileNumber: string;
 }
 
+// Define the props type
 interface ContactDetailsProps {
   formData: FormData;
   handleFormDataChange: (updatedData: Partial<FormData>) => void; // handle partial updates
@@ -39,7 +41,7 @@ const StyledForm = styled.form`
 const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDataChange, onNext, onPrevious }) => {
   const { data: session } = useSession();
   const [errors, setErrors] = useState<Partial<FormData>>({});  // Errors type is also partial since not all fields might have errors
-  
+
   useEffect(() => {
     if (session && session.user && typeof session.user.name === 'string' && session.user.name.trim() !== '') {
       const nameParts = session.user.name.split(' ');
@@ -59,6 +61,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
     }
   }, [session, formData, handleFormDataChange]);
 
+  // Separate handlers for TextField and Select components
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     handleFormDataChange({
@@ -66,8 +69,15 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
     });
   };
 
-  const validateForm = () => {
-    const newErrors: Partial<FormData>  = {};
+  const handleSelectChange = (e: SelectChangeEvent<string>) => {
+    const { name, value } = e.target;
+    handleFormDataChange({
+      [name]: value,
+    });
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<FormData> = {};  // Partial form data for errors
     const mobileNumberRegex = /^\+[1-9]\d{1,14}$/; // E.164 international phone number format
 
     if (!formData.firstName) {
@@ -137,7 +147,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
               <Select
                 name="title"
                 value={formData.title}
-                onChange={handleInputChange}
+                onChange={handleSelectChange}  
                 label="Title"
               >
                 <MenuItem value="">
@@ -188,7 +198,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
           </Grid>
         </Grid>
         <Grid container spacing={3} marginTop={3}>
-          {/* Your previous and next buttons here */}
+          {/* Previous and next buttons */}
         </Grid>
       </StyledForm>
     </FormContainer>
