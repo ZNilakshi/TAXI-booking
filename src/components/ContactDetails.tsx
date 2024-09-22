@@ -3,6 +3,23 @@ import { Container, TextField, Typography, MenuItem, FormControl, InputLabel, Se
 import styled from 'styled-components';
 import { useSession } from 'next-auth/react';
 
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  title: string;
+  email: string;
+  idNumber: string;
+  mobileNumber: string;
+}
+
+interface ContactDetailsProps {
+  formData: FormData;
+  handleFormDataChange: (updatedData: Partial<FormData>) => void; // handle partial updates
+  onNext: () => void;
+  onPrevious: () => void;
+}
+
 const FormContainer = styled(Container)`
   display: flex;
   flex-direction: column;
@@ -19,10 +36,10 @@ const StyledForm = styled.form`
   flex-direction: column;
 `;
 
-const ContactDetails = ({ formData, handleFormDataChange, onNext, onPrevious }) => {
+const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDataChange, onNext, onPrevious }) => {
   const { data: session } = useSession();
-  const [errors, setErrors] = useState({});
-
+  const [errors, setErrors] = useState<Partial<FormData>>({});  // Errors type is also partial since not all fields might have errors
+  
   useEffect(() => {
     if (session && session.user && typeof session.user.name === 'string' && session.user.name.trim() !== '') {
       const nameParts = session.user.name.split(' ');
@@ -40,9 +57,9 @@ const ContactDetails = ({ formData, handleFormDataChange, onNext, onPrevious }) 
         email: formData.email || session?.user?.email || '',
       });
     }
-  }, [session]);
+  }, [session, formData, handleFormDataChange]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     handleFormDataChange({
       [name]: value,
@@ -50,7 +67,7 @@ const ContactDetails = ({ formData, handleFormDataChange, onNext, onPrevious }) 
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: Partial<FormData>  = {};
     const mobileNumberRegex = /^\+[1-9]\d{1,14}$/; // E.164 international phone number format
 
     if (!formData.firstName) {
