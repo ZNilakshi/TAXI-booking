@@ -1,13 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Grid, Container, Typography, Card, CardContent, CardActions, CardMedia } from '@mui/material';
 import styled from 'styled-components';
 
-const vehicles = [
+// Define types for form data and coordinates
+interface FormData {
+  pickupCoords: [number, number];
+  dropCoords: [number, number];
+  selectedVehicle?: Vehicle;
+  vehiclePrice?: number;
+}
+
+interface Vehicle {
+  name: string;
+  basePrice: number;
+  imageUrl: string;
+}
+
+interface VehicleSelectionProps {
+  formData: FormData;
+  handleFormDataChange: (data: Partial<FormData>) => void;
+  handleNext: () => void;
+}
+
+// Vehicle data
+const vehicles: Vehicle[] = [
   { name: 'Sedan', basePrice: 10, imageUrl: '/limo.png' },
   { name: 'SUV', basePrice: 15, imageUrl: '/suv.png' },
   { name: 'Van', basePrice: 20, imageUrl: '/mihivan.jpg' },
 ];
 
+// Styled components
 const FormContainer = styled(Container)`
   padding: 20px;
   background: #ffffff;
@@ -21,7 +43,8 @@ const VehicleImage = styled(CardMedia)`
   object-fit: cover;
 `;
 
-const calculateDistance = (pickupCoords, dropCoords) => {
+// Function to calculate the distance between coordinates
+const calculateDistance = (pickupCoords: [number, number], dropCoords: [number, number]): string => {
   const R = 6371; // Radius of the Earth in kilometers
   const dLat = (dropCoords[1] - pickupCoords[1]) * (Math.PI / 180);
   const dLon = (dropCoords[0] - pickupCoords[0]) * (Math.PI / 180);
@@ -34,26 +57,27 @@ const calculateDistance = (pickupCoords, dropCoords) => {
   return distance.toFixed(2);
 };
 
-const VehicleSelection = ({ formData, handleFormDataChange, handleNext }) => {
-  const [selectedVehicle, setSelectedVehicle] = useState(formData.selectedVehicle || null);
-  const distance = formData.pickupCoords && formData.dropCoords ? calculateDistance(formData.pickupCoords, formData.dropCoords) : 0;
+// Vehicle selection component
+const VehicleSelection: React.FC<VehicleSelectionProps> = ({ formData, handleFormDataChange, handleNext }) => {
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(formData.selectedVehicle || null);
+  const distance = formData.pickupCoords && formData.dropCoords ? calculateDistance(formData.pickupCoords, formData.dropCoords) : '0';
+
+  const calculatePrice = useCallback((basePrice: number) => {
+    const pricePerKm = 1; // Sample rate
+    return basePrice + parseFloat(distance) * pricePerKm;
+  }, [distance]);
 
   useEffect(() => {
     if (selectedVehicle) {
       handleFormDataChange({ selectedVehicle, vehiclePrice: calculatePrice(selectedVehicle.basePrice) });
     }
-  }, [selectedVehicle]);
+  }, [selectedVehicle, calculatePrice, handleFormDataChange]);
 
-  const calculatePrice = (basePrice) => {
-    const pricePerKm = 1; // This is a sample rate. Adjust as needed.
-    return basePrice + distance * pricePerKm;
-  };
-
-  const handleSelect = (vehicle) => {
+  const handleSelect = (vehicle: Vehicle) => {
     setSelectedVehicle(vehicle);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedVehicle) {
       handleNext();
@@ -70,9 +94,7 @@ const VehicleSelection = ({ formData, handleFormDataChange, handleNext }) => {
           <Grid item xs={12} sm={6} md={4} key={vehicle.name}>
             <Card>
               <VehicleImage
-                component="img"
                 image={vehicle.imageUrl}
-                alt={vehicle.name}
               />
               <CardContent>
                 <Typography variant="h5" component="div">

@@ -4,11 +4,24 @@ import styled from 'styled-components';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import axios from 'axios';
+
+interface FormData {
+  pickupLocation: string | null;
+  dropLocation: string | null;
+  dateTime: Dayjs | null;
+  pickupCoords: [number, number] | null;
+  dropCoords: [number, number] | null;
+}
+
+interface RideDetailsProps {
+  formData: FormData;
+  handleFormDataChange: (updatedFormData: Partial<FormData>) => void;
+}
 
 const FormContainer = styled(Container)`
   padding: 20px;
@@ -38,43 +51,44 @@ const DistanceContainer = styled.div`
   text-align: center;
 `;
 
-const RideDetails = ({ formData, handleFormDataChange }) => {
-  const [pickupSuggestions, setPickupSuggestions] = useState([]);
-  const [dropSuggestions, setDropSuggestions] = useState([]);
-  const [distance, setDistance] = useState(null);
+const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChange }) => {
+  const [pickupSuggestions, setPickupSuggestions] = useState<string[]>([]);
+  const [dropSuggestions, setDropSuggestions] = useState<string[]>([]);
+  const [distance, setDistance] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const mapRef = useRef(null);
-  const mapInstance = useRef(null);
-  const pickupMarker = useRef(null);
-  const dropMarker = useRef(null);
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapInstance = useRef<mapboxgl.Map | null>(null);
+  const pickupMarker = useRef<mapboxgl.Marker | null>(null);
+  const dropMarker = useRef<mapboxgl.Marker | null>(null);
   const routeLayerId = 'route';
+
+
   useEffect(() => {
-    // Check for a selected location from local storage on mount
-    const selectedLocation = JSON.parse(localStorage.getItem("selectedLocation"));
+    const selectedLocation = JSON.parse(localStorage.getItem("selectedLocation") || 'null');
     if (selectedLocation) {
       handleFormDataChange({
         ...formData,
         pickupLocation: selectedLocation.name,
         pickupCoords: selectedLocation.coords,
       });
-      localStorage.removeItem("selectedLocation"); // Clear it after setting
+      localStorage.removeItem("selectedLocation");
     }
-  }, []);
+  }, [formData, handleFormDataChange]);
 
-  const fetchSuggestions = async (query, setSuggestions) => {
+  const fetchSuggestions = async (query: string, setSuggestions: (suggestions: string[]) => void) => {
     const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
     const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json`, {
       params: {
         access_token: accessToken,
         autocomplete: true,
         limit: 5,
-        country: 'LK', // Restrict to Sri Lanka
+        country: 'LK',
       },
     });
-    setSuggestions(response.data.features.map((feature) => feature.place_name));
+    setSuggestions(response.data.features.map((feature: any) => feature.place_name));
   };
 
-  const calculateDistance = (pickupCoords, dropCoords) => {
+  const calculateDistance = (pickupCoords: [number, number], dropCoords: [number, number]) => {
     const R = 6371; // Radius of the Earth in kilometers
     const dLat = (dropCoords[1] - pickupCoords[1]) * (Math.PI / 180);
     const dLon = (dropCoords[0] - pickupCoords[0]) * (Math.PI / 180);
@@ -87,7 +101,7 @@ const RideDetails = ({ formData, handleFormDataChange }) => {
     setDistance(distance.toFixed(2));
   };
 
-  const drawRoute = async (map, pickupCoords, dropCoords) => {
+  const drawRoute = async (map: mapboxgl.Map, pickupCoords: [number, number], dropCoords: [number, number]) => {
     if (map.getLayer(routeLayerId)) {
       map.removeLayer(routeLayerId);
       map.removeSource(routeLayerId);
@@ -138,13 +152,13 @@ const RideDetails = ({ formData, handleFormDataChange }) => {
     }
     mapboxgl.accessToken = accessToken;
     mapInstance.current = new mapboxgl.Map({
-      container: mapRef.current,
+      container: mapRef.current!,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [80.1070, 7.0873],
       zoom: 6,
     });
 
-    return () => mapInstance.current.remove();
+    return () => mapInstance.current?.remove();
   }, []);
 
   useEffect(() => {
@@ -178,7 +192,9 @@ const RideDetails = ({ formData, handleFormDataChange }) => {
     }
   }, [formData.pickupCoords, formData.dropCoords]);
 
-  const handlePlaceSelect = async (place, isPickup) => {
+  const handlePlaceSelect = async (place: string | null, isPickup: boolean) => {
+    if (!place) return;
+    
     const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
     const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${place}.json`, {
       params: {
@@ -186,10 +202,12 @@ const RideDetails = ({ formData, handleFormDataChange }) => {
         limit: 1,
       },
     });
+
+
     const feature = response.data.features[0];
-    const coordinates = feature.center;
-    const country = feature.context.find(c => c.id.startsWith('country')).text;
-    
+    const coordinates: [number, number] = feature.center;
+    const country = feature.context.find((c: any) => c.id.startsWith('country')).text;
+     
     if (country !== 'Sri Lanka') {
       setErrorMessage('Please add a location in Sri Lanka.');
       return;
@@ -210,64 +228,44 @@ const RideDetails = ({ formData, handleFormDataChange }) => {
         Ride Details
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <StyledForm>
-            <Autocomplete
-              options={pickupSuggestions}
-              value={formData.pickupLocation}
-              onChange={(event, newValue) => handlePlaceSelect(newValue, true)}
-              onInputChange={(event, newInputValue) => {
-                fetchSuggestions(newInputValue, setPickupSuggestions);
-              }}
-              renderInput={(params) => (
-                <StyledTextField
-                  {...params}
-                  label="Pickup Location"
-                  variant="outlined"
-                  fullWidth
-                  required
-                />
-              )}
-            />
-            <Autocomplete
-              options={dropSuggestions}
-              value={formData.dropLocation}
-              onChange={(event, newValue) => handlePlaceSelect(newValue, false)}
-              onInputChange={(event, newInputValue) => {
-                fetchSuggestions(newInputValue, setDropSuggestions);
-              }}
-              renderInput={(params) => (
-                <StyledTextField
-                  {...params}
-                  label="Drop Location"
-                  variant="outlined"
-                  fullWidth
-                  required
-                />
-              )}
-            />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                label="Date & Time"
-                value={formData.dateTime}
-                onChange={(newValue) => handleFormDataChange({ ...formData, dateTime: newValue })}
-                renderInput={(params) => <StyledTextField {...params} variant="outlined" fullWidth required />}
-              />
-            </LocalizationProvider>
-          </StyledForm>
-          {distance && (
-            <DistanceContainer>
-              <Typography variant="h6">Distance: {distance} km</Typography>
-            </DistanceContainer>
-          )}
-          {errorMessage && (
-            <Typography variant="body1" color="error">{errorMessage}</Typography>
-          )}
+        <Grid item xs={12}>
+          <Autocomplete
+            options={pickupSuggestions}
+            value={formData.pickupLocation}
+            onInputChange={(event, value) => fetchSuggestions(value, setPickupSuggestions)}
+            onChange={(event, newValue) => handlePlaceSelect(newValue, true)}
+            renderInput={(params) => <StyledTextField {...params} label="Pickup Location" variant="outlined" />}
+          />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <MapContainer ref={mapRef} />
+        <Grid item xs={12}>
+          <Autocomplete
+            options={dropSuggestions}
+            value={formData.dropLocation}
+            onInputChange={(event, value) => fetchSuggestions(value, setDropSuggestions)}
+            onChange={(event, newValue) => handlePlaceSelect(newValue, false)}
+            renderInput={(params) => <StyledTextField {...params} label="Drop Location" variant="outlined" />}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateTimePicker
+            label="Select Date and Time"
+            value={formData.dateTime}
+            onChange={(newValue) => handleFormDataChange({ ...formData, dateTime: newValue })}
+          />
+          </LocalizationProvider>
         </Grid>
       </Grid>
+
+      {errorMessage && <Typography color="error">{errorMessage}</Typography>}
+
+      <MapContainer ref={mapRef} />
+
+      {distance && (
+        <DistanceContainer>
+          <Typography variant="h6">Distance: {distance} km</Typography>
+        </DistanceContainer>
+      )}
     </FormContainer>
   );
 };
