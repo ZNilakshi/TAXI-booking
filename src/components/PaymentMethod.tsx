@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Card, CardContent, Radio, FormControlLabel, Button } from '@mui/material';
 import styled from 'styled-components';
 
@@ -14,7 +14,6 @@ interface PaymentMethodProps {
   onNext: () => void;    // Add onNext
   onPrevious: () => void; // Add onPrevious (if needed)
 }
-
 
 // Styled Components
 const FormContainer = styled(Container)`
@@ -60,11 +59,6 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ handleFormDataChange, for
     setPaymentMethod(formData.paymentMethod);
   }, [formData]);
 
-  
-  function handleNext(event: React.MouseEvent<HTMLButtonElement>): void {
-    // Implement the function or navigate to the next step
-    console.log("Proceeding to the next step");
-  }
   return (
     <FormContainer>
       <Typography variant="h4" gutterBottom>Payment Method</Typography>
@@ -99,12 +93,17 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ handleFormDataChange, for
             </PaymentCard>
           </Grid>
 
-          <Button variant="contained" color="primary" onClick={onNext} style={{ marginTop: '20px' }}>
-            Next
-          </Button>
-
-        
-
+          {/* Centering the Next Button */}
+          <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={onNext} 
+              style={{ marginTop: '20px' }}
+            >
+              Next
+            </Button>
+          </Grid>
         </Grid>
       </StyledForm>
     </FormContainer>

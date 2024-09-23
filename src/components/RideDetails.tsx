@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TextField, Grid, Container, Typography, Autocomplete, Button } from '@mui/material'; // <-- Button is imported here
+import { TextField, Grid, Container, Typography, Autocomplete, Button } from '@mui/material';
 import styled from 'styled-components';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -21,9 +21,8 @@ interface FormData {
 type RideDetailsProps = {
   formData: FormData;
   handleFormDataChange: (newData: Partial<FormData>) => void;
-  handleNext: () => void; // Add this
+  handleNext: () => void;
 };
-
 
 const FormContainer = styled(Container)`
   padding: 20px;
@@ -44,7 +43,8 @@ const StyledTextField = styled(TextField)`
 
 const MapContainer = styled.div`
   width: 100%;
-  height: 400px;
+  height: 100%;
+  min-height: 400px;
   margin-top: 20px;
 `;
 
@@ -53,7 +53,7 @@ const DistanceContainer = styled.div`
   text-align: center;
 `;
 
-const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChange, handleNext  }) => {
+const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChange, handleNext }) => {
   const [pickupSuggestions, setPickupSuggestions] = useState<string[]>([]);
   const [dropSuggestions, setDropSuggestions] = useState<string[]>([]);
   const [distance, setDistance] = useState<string | null>(null);
@@ -63,7 +63,6 @@ const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChang
   const pickupMarker = useRef<mapboxgl.Marker | null>(null);
   const dropMarker = useRef<mapboxgl.Marker | null>(null);
   const routeLayerId = 'route';
-
 
   useEffect(() => {
     const selectedLocation = JSON.parse(localStorage.getItem("selectedLocation") || 'null');
@@ -205,7 +204,6 @@ const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChang
       },
     });
 
-
     const feature = response.data.features[0];
     const coordinates: [number, number] = feature.center;
     const country = feature.context.find((c: any) => c.id.startsWith('country')).text;
@@ -223,73 +221,60 @@ const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChang
       handleFormDataChange({ ...formData, dropLocation: place, dropCoords: coordinates });
     }
   };
-  const proceedToNextStep = () => {
-    if (formData.pickupLocation && formData.dropLocation && formData.dateTime) {
-      // Call the parent component's handleNext passed via props
-      handleNext(); 
-    } else {
-      alert('Please fill out all fields before proceeding.');
-    }
-  };
-  
-  
 
   return (
     <FormContainer>
-      <Typography variant="h4" gutterBottom>
-        Ride Details
-      </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Autocomplete
-            options={pickupSuggestions}
-            value={formData.pickupLocation}
-            onInputChange={(event, value) => fetchSuggestions(value, setPickupSuggestions)}
-            onChange={(event, newValue) => handlePlaceSelect(newValue, true)}
-            renderInput={(params) => <StyledTextField {...params} label="Pickup Location" variant="outlined" />}
-          />
+        <Grid item xs={12} md={6}>
+          <Typography variant="h4" gutterBottom>
+            Ride Details
+          </Typography>
+          <StyledForm>
+            <Autocomplete
+              options={pickupSuggestions}
+              value={formData.pickupLocation}
+              onInputChange={(event, value) => fetchSuggestions(value, setPickupSuggestions)}
+              onChange={(event, newValue) => handlePlaceSelect(newValue, true)}
+              renderInput={(params) => <StyledTextField {...params} label="Pickup Location" variant="outlined" />}
+            />
+            <Autocomplete
+              options={dropSuggestions}
+              value={formData.dropLocation}
+              onInputChange={(event, value) => fetchSuggestions(value, setDropSuggestions)}
+              onChange={(event, newValue) => handlePlaceSelect(newValue, false)}
+              renderInput={(params) => <StyledTextField {...params} label="Drop Location" variant="outlined" />}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                label="Select Date and Time"
+                value={formData.dateTime}
+                onChange={(newValue) => handleFormDataChange({ ...formData, dateTime: newValue })}
+              />
+            </LocalizationProvider>
+            {errorMessage && (
+              <Typography color="error" variant="body2">
+                {errorMessage}
+              </Typography>
+            )}
+            <DistanceContainer>
+              {distance && <Typography variant="h6">Distance: {distance} km</Typography>}
+            </DistanceContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+              style={{ marginTop: '20px' }}
+            >
+              Next
+            </Button>
+          </StyledForm>
         </Grid>
-        <Grid item xs={12}>
-          <Autocomplete
-            options={dropSuggestions}
-            value={formData.dropLocation}
-            onInputChange={(event, value) => fetchSuggestions(value, setDropSuggestions)}
-            onChange={(event, newValue) => handlePlaceSelect(newValue, false)}
-            renderInput={(params) => <StyledTextField {...params} label="Drop Location" variant="outlined" />}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateTimePicker
-            label="Select Date and Time"
-            value={formData.dateTime}
-            onChange={(newValue) => handleFormDataChange({ ...formData, dateTime: newValue })}
-          />
-          </LocalizationProvider>
+
+        <Grid item xs={12} md={6}>
+          <MapContainer ref={mapRef} />
         </Grid>
       </Grid>
-
-      {errorMessage && <Typography color="error">{errorMessage}</Typography>}
-
-      <MapContainer ref={mapRef} />
-
-      {distance && (
-        <DistanceContainer>
-          <Typography variant="h6">Distance: {distance} km</Typography>
-        </DistanceContainer>
-      )}
-
-{errorMessage && (
-          <Typography color="error" variant="body2">
-            {errorMessage}
-          </Typography>
-        )}
-        <MapContainer ref={mapRef} />
-        <Button variant="contained" color="primary" onClick={handleNext} style={{ marginTop: '20px' }}>
-          Next
-        </Button>
     </FormContainer>
-    
   );
 };
 
