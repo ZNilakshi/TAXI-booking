@@ -197,9 +197,9 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
             />
           </Grid>
         </Grid>
-        <Grid container spacing={3} marginTop={3}>
-          {/* Previous and next buttons */}
-        </Grid>
+        <Button variant="contained" color="primary" onClick={handleNext} style={{ marginTop: '20px' }}>
+          Next
+        </Button>
       </StyledForm>
     </FormContainer>
   );

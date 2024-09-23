@@ -1,16 +1,12 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
-import { Step, Stepper, StepLabel, Button } from '@mui/material';
-import styled from 'styled-components';
-import RideDetails from './RideDetails';
-import VehicleSelection from './VehicleSelection';
-import ContactDetails from './ContactDetails';
-import PaymentMethod from './PaymentMethod';
-import BookingSummary from './BookingSummary';
-import dayjs, { Dayjs } from 'dayjs';
-
-
+import React, { useState, useCallback, useEffect } from "react";
+import { Step, Stepper, StepLabel, Button } from "@mui/material";
+import styled from "styled-components";
+import RideDetails from "./RideDetails";
+import VehicleSelection from "./VehicleSelection";
+import ContactDetails from "./ContactDetails";
+import PaymentMethod from "./PaymentMethod";
+import BookingSummary from "./BookingSummary";
+import dayjs, { Dayjs } from "dayjs";
 
 type Vehicle = {
   name: string;
@@ -19,7 +15,7 @@ type Vehicle = {
 };
 
 type FormData = {
-  pickupLocation: string | null; // Standardize to string | null
+  pickupLocation: string | null;
   pickupCoords: [number, number] | null;
   dropLocation: string | null;
   dropCoords: [number, number] | null;
@@ -35,7 +31,13 @@ type FormData = {
   email: string;
 };
 
-const steps = ['Ride Details', 'Vehicle Selection', 'Contact Details', 'Payment Method', 'Booking Summary'];
+const steps = [
+  "Ride Details",
+  "Vehicle Selection",
+  "Contact Details",
+  "Payment Method",
+  "Booking Summary",
+];
 
 const Container = styled.div`
   display: flex;
@@ -80,59 +82,108 @@ const StepLabelCustom = styled(StepLabel)`
 const MultiStepForm = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
-    pickupLocation: null, // Change undefined to null
+    pickupLocation: null,
     pickupCoords: null,
-    dropLocation: null, // Change undefined to null
+    dropLocation: null,
     dropCoords: null,
     dateTime: null,
     selectedVehicle: null,
-    firstName: '',
-    lastName: '',
-    title: '',
-    idNumber: '',
-    mobileNumber: '',
-    paymentMethod: '',
-    bookingId: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    title: "",
+    idNumber: "",
+    mobileNumber: "",
+    paymentMethod: "",
+    bookingId: "",
+    email: "",
   });
-  
+
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleFormDataChange = (newData: Partial<FormData>) => {
-    setFormData((prevData) => ({ ...prevData, ...newData }));
-  };
+  // Use useCallback to memoize the handler and debounce state updates to avoid repeated renders
+  const handleFormDataChange = useCallback(
+    (newData: Partial<FormData>) => {
+      setFormData((prevData) => {
+        const updatedData = { ...prevData, ...newData };
+        // Ensure the state only updates if something has actually changed
+        if (JSON.stringify(prevData) !== JSON.stringify(updatedData)) {
+          return updatedData;
+        }
+        return prevData;
+      });
+    },
+    [setFormData]
+  );
+
+  // Generate booking ID once when the form is submitted
+  useEffect(() => {
+    if (!formData.bookingId && isSubmitted) {
+      const bookingId = generateBookingId();
+      setFormData((prevData) => ({ ...prevData, bookingId }));
+    }
+  }, [formData.bookingId, isSubmitted]);
 
   const generateBookingId = () => {
     const now = new Date();
-    const datePart = now.toISOString().replace(/[-:.TZ]/g, '');
-    const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    const datePart = now.toISOString().replace(/[-:.TZ]/g, "");
+    const randomPart = Math.floor(Math.random() * 10000)
+      .toString()
+      .padStart(4, "0");
     return `BOOK-${datePart}-${randomPart}`;
   };
 
   const getStepContent = (stepIndex: number) => {
     switch (stepIndex) {
       case 0:
-        return <RideDetails formData={formData} handleFormDataChange={handleFormDataChange} />;
+        return (
+          <RideDetails
+            formData={formData}
+            handleFormDataChange={handleFormDataChange}
+            handleNext={handleNext}
+          />
+        );
       case 1:
-        return <VehicleSelection formData={formData} handleFormDataChange={handleFormDataChange} handleNext={function (): void {
-          throw new Error('Function not implemented.');
-        } } />;
+        return (
+          <VehicleSelection
+            formData={formData}
+            handleFormDataChange={handleFormDataChange}
+            handleNext={handleNext}
+          />
+        );
       case 2:
-        return <ContactDetails formData={formData} handleFormDataChange={handleFormDataChange} onNext={handleNext} onPrevious={handlePrevious} />;
+        return (
+          <ContactDetails
+            formData={formData}
+            handleFormDataChange={handleFormDataChange}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+        );
       case 3:
-        return <PaymentMethod formData={formData} handleFormDataChange={handleFormDataChange}  />;
-        case 4:
-          return (
-            <BookingSummary
-              formData={{
-                ...formData,
-                dateTime: formData.dateTime ? formData.dateTime.format('YYYY-MM-DD HH:mm') : undefined,
-                selectedVehicle: formData.selectedVehicle ? { name: formData.selectedVehicle.name } : undefined,
-              }}
-            />
-          );
-          default:
-        return 'Unknown step';
+        return (
+          <PaymentMethod
+            formData={formData}
+            handleFormDataChange={handleFormDataChange}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+        );
+      case 4:
+        return (
+          <BookingSummary
+            formData={{
+              ...formData,
+              dateTime: formData.dateTime
+                ? formData.dateTime.format("YYYY-MM-DD HH:mm")
+                : undefined,
+              selectedVehicle: formData.selectedVehicle
+                ? { name: formData.selectedVehicle.name }
+                : undefined,
+            }}
+          />
+        );
+      default:
+        return "Unknown step";
     }
   };
 
@@ -151,25 +202,23 @@ const MultiStepForm = () => {
   const saveFormData = () => {
     if (!formData.bookingId) {
       const bookingId = generateBookingId();
-      setFormData((prevData) => ({ ...prevData, bookingId }));
+      const formDataWithId = { ...formData, bookingId };
+      setFormData(formDataWithId);
 
-      setTimeout(() => {
-        const formDataWithId = { ...formData, bookingId };
-        fetch('/api/bookings', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formDataWithId),
+      fetch("/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formDataWithId),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          setIsSubmitted(true);
         })
-          .then((response) => response.json())
-          .then((data) => {
-            setIsSubmitted(true);
-          })
-          .catch((error) => {
-            alert('Failed to save booking.');
-          });
-      }, 0);
+        .catch(() => {
+          alert("Failed to save booking.");
+        });
     }
   };
 
@@ -187,10 +236,14 @@ const MultiStepForm = () => {
 
       <FormContainer>
         {steps.map((label, index) => (
-          <StepContent key={label} style={{ display: activeStep >= index ? 'block' : 'none' }}>
+          <StepContent
+            key={label}
+            style={{ display: activeStep === index ? "block" : "none" }}
+          >
             {getStepContent(index)}
           </StepContent>
         ))}
+
         {activeStep === steps.length - 1 && (
           <div>
             {!isSubmitted ? (

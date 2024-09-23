@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TextField, Grid, Container, Typography, Autocomplete } from '@mui/material';
+import { TextField, Grid, Container, Typography, Autocomplete, Button } from '@mui/material'; // <-- Button is imported here
 import styled from 'styled-components';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -18,10 +18,12 @@ interface FormData {
   dropCoords: [number, number] | null;
 }
 
-interface RideDetailsProps {
+type RideDetailsProps = {
   formData: FormData;
-  handleFormDataChange: (updatedFormData: Partial<FormData>) => void;
-}
+  handleFormDataChange: (newData: Partial<FormData>) => void;
+  handleNext: () => void; // Add this
+};
+
 
 const FormContainer = styled(Container)`
   padding: 20px;
@@ -51,7 +53,7 @@ const DistanceContainer = styled.div`
   text-align: center;
 `;
 
-const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChange }) => {
+const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChange, handleNext  }) => {
   const [pickupSuggestions, setPickupSuggestions] = useState<string[]>([]);
   const [dropSuggestions, setDropSuggestions] = useState<string[]>([]);
   const [distance, setDistance] = useState<string | null>(null);
@@ -221,6 +223,16 @@ const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChang
       handleFormDataChange({ ...formData, dropLocation: place, dropCoords: coordinates });
     }
   };
+  const proceedToNextStep = () => {
+    if (formData.pickupLocation && formData.dropLocation && formData.dateTime) {
+      // Call the parent component's handleNext passed via props
+      handleNext(); 
+    } else {
+      alert('Please fill out all fields before proceeding.');
+    }
+  };
+  
+  
 
   return (
     <FormContainer>
@@ -266,7 +278,18 @@ const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChang
           <Typography variant="h6">Distance: {distance} km</Typography>
         </DistanceContainer>
       )}
+
+{errorMessage && (
+          <Typography color="error" variant="body2">
+            {errorMessage}
+          </Typography>
+        )}
+        <MapContainer ref={mapRef} />
+        <Button variant="contained" color="primary" onClick={handleNext} style={{ marginTop: '20px' }}>
+          Next
+        </Button>
     </FormContainer>
+    
   );
 };
 

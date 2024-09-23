@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Typography, Grid, Card, CardContent, Radio, FormControlLabel } from '@mui/material';
+import { Container, Typography, Grid, Card, CardContent, Radio, FormControlLabel, Button } from '@mui/material';
 import styled from 'styled-components';
 
 // Define the types for formData and handleFormDataChange
@@ -11,7 +11,10 @@ interface FormData {
 interface PaymentMethodProps {
   formData: FormData;
   handleFormDataChange: (data: Partial<FormData>) => void;
+  onNext: () => void;    // Add onNext
+  onPrevious: () => void; // Add onPrevious (if needed)
 }
+
 
 // Styled Components
 const FormContainer = styled(Container)`
@@ -43,7 +46,7 @@ const PaymentCard = styled(Card)<{ selected: boolean }>`
 `;
 
 // PaymentMethod Component
-const PaymentMethod: React.FC<PaymentMethodProps> = ({ handleFormDataChange, formData }) => {
+const PaymentMethod: React.FC<PaymentMethodProps> = ({ handleFormDataChange, formData, onNext, onPrevious }) => {
   const [paymentMethod, setPaymentMethod] = useState(formData?.paymentMethod || 'Card');
 
   // Update state and call the formData handler when payment method changes
@@ -57,6 +60,11 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ handleFormDataChange, for
     setPaymentMethod(formData.paymentMethod);
   }, [formData]);
 
+  
+  function handleNext(event: React.MouseEvent<HTMLButtonElement>): void {
+    // Implement the function or navigate to the next step
+    console.log("Proceeding to the next step");
+  }
   return (
     <FormContainer>
       <Typography variant="h4" gutterBottom>Payment Method</Typography>
@@ -90,6 +98,13 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ handleFormDataChange, for
               </CardContent>
             </PaymentCard>
           </Grid>
+
+          <Button variant="contained" color="primary" onClick={onNext} style={{ marginTop: '20px' }}>
+            Next
+          </Button>
+
+        
+
         </Grid>
       </StyledForm>
     </FormContainer>

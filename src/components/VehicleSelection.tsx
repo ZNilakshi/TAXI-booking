@@ -121,6 +121,11 @@ const VehicleSelection: React.FC<VehicleSelectionProps> = ({ formData, handleFor
           </Grid>
         ))}
       </Grid>
+{/* Submit button */}
+<Button variant="contained" color="primary" onClick={handleNext} style={{ marginTop: '20px' }}>
+          Next
+        </Button>
+
     </FormContainer>
   );
 };
