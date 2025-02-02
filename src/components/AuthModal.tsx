@@ -201,7 +201,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 type="email"
                 name="email"
                 id="email"
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-custom-blue"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-custom-blue text-black"
                 placeholder="Enter your email"
                 required
               />
@@ -213,7 +213,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   type="password"
                   name="password"
                   id="password"
-                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-custom-blue"
+                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-custom-blue  text-black"
                   placeholder="Enter your password"
                   required
                 />
