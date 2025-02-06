@@ -183,39 +183,6 @@ const MultiStepForm = () => {
     }
   };
 
-  const sendNotification = async (mobileNumber: string, bookingId: string) => {
-    try {
-      const response = await fetch("/api/check-whatsapp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mobileNumber }),
-      });
-  
-      const data = await response.json();
-  
-      if (data.isWhatsApp) {
-        await fetch("/api/send-whatsapp", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ mobileNumber, bookingId }),
-        });
-      } else {
-        await fetch("/api/send-sms", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ mobileNumber, bookingId }),
-        });
-      }
-    } catch (error) {
-      console.error("Failed to send notification:", error);
-    }
-  };
   
 
   const saveFormData = () => {
