@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Navbar from "../components/Navbar";
 import Image from "next/image"; // Use next/image for optimized images
+import { FaWhatsapp, FaYoutube, FaFacebook, FaInstagram } from "react-icons/fa";
+import { SiImou } from "react-icons/si";
 
 interface ArrowProps {
   onClick?: () => void;
@@ -99,10 +101,10 @@ const VehicleSlider = ({ vehicleImages }: { vehicleImages: string[] }) => {
         <div key={index} className="flex flex-col items-center">
           <div className="relative w-full rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300 border-4 border-black-500">
             <Image src={src} alt={`Vehicle ${index + 1}`} width={450} height={250} className="w-[450px] h-[250px] rounded-lg" />
-            <p className="mt-2 text-base font-light text-black text-center">{['Luxury Sedan', 'SUV', 'Minivan', 'Van'][index]}</p>
+            <p className="mt-2 text-base font-light text-black text-center">{['Mini Car', 'Sedan Car', 'Minivan', 'Van 10 Seats', 'Van 14 Seats'][index]}</p>
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-75 text-white opacity-0 hover:opacity-100 transition-opacity duration-300">
-              <p className="text-lg font-medium">Seats: {[4, 4, 7, 10][index]}</p>
-              <p className="text-base font-light">Conditions: Leather seats, Air conditioning, Wi-Fi</p>
+              <p className="text-lg font-medium">Seats: {[3, 3, 5, 10,14][index]}</p>
+              <p className="text-base font-light">Conditions:  Air conditioning</p>
             </div>
           </div>
         </div>
@@ -150,7 +152,7 @@ export default function Home() {
     },
   ];
 
-  const vehicleImages = ["/ls.png", "/suv.png", "/mihivan.jpg", "/limo.png"];
+  const vehicleImages = ["/Alto.png", "/prius.png", "/suzuki.png", "/kdh.png", "/kdhh.png"];
 
   return (
     <>
@@ -160,7 +162,7 @@ export default function Home() {
       ></div>
       <Navbar />
       <div className="relative w-full py-20 text-center text-white flex flex-col items-center">
-        <h1 className="mt-40 text-7xl font-semibold text-blue">AHASNA Car Services</h1>
+        <h1 className="mt-40 text-7xl font-semibold text-blue">Ceylon Ahasna Traval & Tour</h1>
         <h2 className="mt-10 text-3xl font-light">SEATTLE&#39;S PREMIUM TRANSPORTATION COMPANY</h2>
         <div className="flex gap-5 mt-10 mb-20 py-4 px-10">
           <button
@@ -171,9 +173,9 @@ export default function Home() {
           </button>
           <button
             className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white"
-            onClick={() => window.location.href = 'tel:+94702610614'}
+            onClick={() => window.location.href = 'tel:+94719807100'}
           >
-            +94702610614
+            +94719807100
           </button>
         </div>
         <div className="max-w-3xl mx-auto mt-1 p-1 text-black bg-opacity-80 rounded-lg">
@@ -201,7 +203,13 @@ export default function Home() {
       </div>
       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
         <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
-        <p className="text-sm text-black">&copy; 2024 AHASNA Car Service. All rights reserved.</p>
+        <div className="flex gap-5 mt-2">
+          <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
+          <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
+          <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
+          <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
+             </div>
+        <p className="text-sm text-black mt-2">&copy; 2024 Ceylon Ahasna Travel & Tour. All rights reserved.</p>
       </footer>
     </>
   );

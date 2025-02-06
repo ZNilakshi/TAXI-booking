@@ -10,15 +10,15 @@ interface BookingFormData {
   dateTime?: string;
   firstName?: string;
   lastName?: string;
-  title?: string;
+  
   email?: string;
-  idNumber?: string;
+ 
   mobileNumber?: string;
   selectedVehicle?: {
     name: string;
   };
   vehiclePrice?: number;
-  paymentMethod?: string;
+  
 }
 
 
@@ -59,7 +59,7 @@ const formatDateTime = (dateTime: string | undefined): string => {
 };
 
 const formatPrice = (price: number | undefined): string => {
-  return price ? `$${price.toFixed(2)}` : 'N/A';
+  return price ? `RS ${price.toFixed(2)}` : 'N/A';
 };
 
 const BookingSummary = ({ formData = {} as BookingFormData }) => {
@@ -89,10 +89,8 @@ return (
             <ItemTitle variant="h6">Contact Details</ItemTitle>
             <ItemContent variant="body1">First Name: {formData.firstName || 'N/A'}</ItemContent>
             <ItemContent variant="body1">Last Name: {formData.lastName || 'N/A'}</ItemContent>
-            <ItemContent variant="body1">Title: {formData.title || 'N/A'}</ItemContent>
-            <ItemContent variant="body1">Email: {formData.email || 'N/A'}</ItemContent>
-            <ItemContent variant="body1">ID Number: {formData.idNumber || 'N/A'}</ItemContent>
-            <ItemContent variant="body1">Mobile Number: {formData.mobileNumber || 'N/A'}</ItemContent>
+             <ItemContent variant="body1">Email: {formData.email || 'N/A'}</ItemContent>
+              <ItemContent variant="body1">Mobile Number: {formData.mobileNumber || 'N/A'}</ItemContent>
           </SummaryItem>
         </Grid>
 
@@ -101,10 +99,6 @@ return (
             <ItemTitle variant="h6">Vehicle Selection</ItemTitle>
             <ItemContent variant="body1">Vehicle: {formData.selectedVehicle?.name || 'N/A'}</ItemContent>
             <ItemContent variant="body1">Vehicle Price: {formatPrice(formData.vehiclePrice)}</ItemContent>
-          </SummaryItem>
-          <SummaryItem>
-            <ItemTitle variant="h6">Payment Method</ItemTitle>
-            <ItemContent variant="body1">Payment Method: {formData.paymentMethod || 'N/A'}</ItemContent>
           </SummaryItem>
         </Grid>
       </Grid>

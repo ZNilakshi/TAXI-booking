@@ -4,7 +4,6 @@ import styled from "styled-components";
 import RideDetails from "./RideDetails";
 import VehicleSelection from "./VehicleSelection";
 import ContactDetails from "./ContactDetails";
-import PaymentMethod from "./PaymentMethod";
 import BookingSummary from "./BookingSummary";
 import dayjs, { Dayjs } from "dayjs";
 
@@ -23,10 +22,7 @@ type FormData = {
   selectedVehicle: Vehicle | null;
   firstName: string;
   lastName: string;
-  title: string;
-  idNumber: string;
   mobileNumber: string;
-  paymentMethod: string;
   bookingId: string;
   email: string;
 };
@@ -35,7 +31,6 @@ const steps = [
   "Ride Details",
   "Vehicle Selection",
   "Contact Details",
-  "Payment Method",
   "Booking Summary",
 ];
 
@@ -90,10 +85,7 @@ const MultiStepForm = () => {
     selectedVehicle: null,
     firstName: "",
     lastName: "",
-    title: "",
-    idNumber: "",
     mobileNumber: "",
-    paymentMethod: "",
     bookingId: "",
     email: "",
   });
@@ -159,16 +151,8 @@ const MultiStepForm = () => {
             onPrevious={handlePrevious}
           />
         );
+      
       case 3:
-        return (
-          <PaymentMethod
-            formData={formData}
-            handleFormDataChange={handleFormDataChange}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-          />
-        );
-      case 4:
         return (
           <BookingSummary
             formData={{
@@ -199,6 +183,41 @@ const MultiStepForm = () => {
     }
   };
 
+  const sendNotification = async (mobileNumber: string, bookingId: string) => {
+    try {
+      const response = await fetch("/api/check-whatsapp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mobileNumber }),
+      });
+  
+      const data = await response.json();
+  
+      if (data.isWhatsApp) {
+        await fetch("/api/send-whatsapp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ mobileNumber, bookingId }),
+        });
+      } else {
+        await fetch("/api/send-sms", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ mobileNumber, bookingId }),
+        });
+      }
+    } catch (error) {
+      console.error("Failed to send notification:", error);
+    }
+  };
+  
+
   const saveFormData = () => {
     if (!formData.bookingId) {
       const bookingId = generateBookingId();
@@ -215,23 +234,36 @@ const MultiStepForm = () => {
         .then((response) => response.json())
         .then(() => {
           setIsSubmitted(true);
+          
         })
         .catch(() => {
           alert("Failed to save booking.");
         });
     }
   };
+;
+  
 
   return (
     <Container>
       <StepperContainer>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabelCustom>{label}</StepLabelCustom>
-            </Step>
-          ))}
-        </Stepper>
+      <Stepper activeStep={activeStep} orientation="vertical">
+  {steps.map((label, index) => (
+    <Step key={label} completed={index < activeStep}>
+      <StepLabelCustom
+        onClick={() => {
+          if (index <= activeStep) {
+            setActiveStep(index);
+          }
+        }}
+        style={{ cursor: index <= activeStep ? "pointer" : "default" }}
+      >
+        {label}
+      </StepLabelCustom>
+    </Step>
+  ))}
+</Stepper>
+
       </StepperContainer>
 
       <FormContainer>
@@ -261,3 +293,7 @@ const MultiStepForm = () => {
 };
 
 export default MultiStepForm;
+function onPrevious(): void {
+  throw new Error("Function not implemented.");
+}
+

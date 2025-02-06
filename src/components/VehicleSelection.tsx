@@ -24,9 +24,11 @@ interface VehicleSelectionProps {
 
 // Vehicle data
 const vehicles: Vehicle[] = [
-  { name: 'Sedan', basePrice: 10, imageUrl: '/limo.png' },
-  { name: 'SUV', basePrice: 15, imageUrl: '/suv.png' },
-  { name: 'Van', basePrice: 20, imageUrl: '/mihivan.jpg' },
+  { name: 'Mini Car', basePrice: 85, imageUrl: '/Alto.png' },
+  { name: 'Sedan', basePrice: 100, imageUrl: '/prius.png' },
+  { name: 'Mini Van', basePrice: 110, imageUrl: '/suzuki.png'},
+  { name: 'Van 10 Seats', basePrice: 125, imageUrl: '/kdh.png' },
+  { name: 'Van 14 Seats', basePrice: 140, imageUrl: '/kdhh.png' },
 ];
 
 // Styled components
@@ -63,8 +65,8 @@ const VehicleSelection: React.FC<VehicleSelectionProps> = ({ formData, handleFor
   const distance = formData.pickupCoords && formData.dropCoords ? calculateDistance(formData.pickupCoords, formData.dropCoords) : '0';
 
   const calculatePrice = useCallback((basePrice: number) => {
-    const pricePerKm = 1; // Sample rate
-    return basePrice + parseFloat(distance) * pricePerKm;
+    const distanceValue = parseFloat(distance);
+    return distanceValue * basePrice; // Multiply base price by distance
   }, [distance]);
 
   useEffect(() => {
@@ -101,10 +103,10 @@ const VehicleSelection: React.FC<VehicleSelectionProps> = ({ formData, handleFor
                   {vehicle.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Base Price: ${vehicle.basePrice}
+                  Base Price: RS{vehicle.basePrice}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Total Price: ${calculatePrice(vehicle.basePrice).toFixed(2)}
+                  Total Price: RS{calculatePrice(vehicle.basePrice).toFixed(2)}
                 </Typography>
               </CardContent>
               <CardActions>
@@ -122,9 +124,15 @@ const VehicleSelection: React.FC<VehicleSelectionProps> = ({ formData, handleFor
         ))}
       </Grid>
 {/* Submit button */}
-<Button variant="contained" color="primary" onClick={handleNext} style={{ marginTop: '20px' }}>
-          Next
-        </Button>
+<Button 
+  variant="contained" 
+  color="primary" 
+  onClick={handleNext} 
+  style={{ marginTop: '20px' }} 
+  disabled={!selectedVehicle} // Button is disabled if no vehicle is selected
+>
+  Next
+</Button>
 
     </FormContainer>
   );

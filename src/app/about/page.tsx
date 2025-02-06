@@ -1,4 +1,4 @@
-// src/app/about/page.tsx
+
 "use client"; 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -8,6 +8,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import Image from 'next/image';
+import { FaWhatsapp, FaYoutube, FaFacebook, FaInstagram } from "react-icons/fa";
+import { SiImou } from "react-icons/si";
+
 
 export default function About() {
   const { data: session } = useSession();
@@ -114,34 +117,59 @@ export default function About() {
           </button>
           <button
             className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white"
-            onClick={() => (window.location.href = "tel:+94702610614")}
+            onClick={() => (window.location.href = "tel:+94719807100")}
           >
-            +94702610614
+            +94719807100
           </button>
         </div>
         <div className="w-4/5 mt-12 p-10 mx-auto"></div>
-        <div className="flex gap-12 mt-11 p-20">
-          <div className="flex items-center">
-            <Image
-              src="/ap.jpg"
-              alt="Image 1"
-              width={500}
-              height={300}
-              className="w-full rounded-lg"
-            />
-          </div>
-          <div className="flex flex-col justify-center max-w-xs font-light text-3xl">
-            <p className="text-black text-4xl mb-5 font-light">ABOUT US</p>
-            <p className="mt-2 text-base font-light text-black">
-              Since 2020 AHANSA Car Services has been the Economy to luxury car
-              services company in Colombo, Sri Lanka. We are serving Colombo
-              area. Our luxury executive cars Suv’s Van service provides
-              courteous and prompt transportation throughout Colombo, Negombo,
-              Kirbathgoda, Bandaraama, Gampaha, and many more cities in Sri
-              Lanka.
-            </p>
-          </div>
-        </div>
+        <div className="flex flex-col md:flex-row gap-12 mt-11 p-5 md:p-20 items-center">
+  {/* Image Section */}
+  <div className="w-full md:w-1/2 flex justify-center">
+    <Image
+      src="/ap.jpg"
+      alt="Image 1"
+      width={500}
+      height={300}
+      className="w-full rounded-lg"
+    />
+  </div>
+
+  {/* About Us Text Section */}
+  <div className="w-full md:w-1/2 text-center md:text-left">
+    <p className="text-black text-4xl mb-5 font-light">ABOUT US</p>
+    <p className="mt-2 text-base font-light text-black">
+      Since <strong>2020</strong>, AHANSA Car Services has been a trusted provider of
+      <strong> economy-to-luxury </strong> car transportation services in <strong>Ella, Sri Lanka</strong>.
+      Whether you&apos;re a tourist exploring the scenic beauty of Ella or a local resident in need of reliable transport,
+      we offer a seamless travel experience tailored to your needs.
+    </p>
+    
+    <p className="mt-4 text-base font-light text-black">
+      We specialize in <strong>luxury executive cars, KDH vans, and Toyota Prius vehicles</strong>, ensuring that every ride is comfortable, safe, and efficient.
+      Our services cater to a wide range of customers, including:
+    </p>
+
+    <div className="mt-2 pl-5 text-base font-light text-black">
+  <p>✅ <strong>Tourists</strong> looking for hassle-free travel between key destinations.</p>
+  <p>✅ <strong>Business professionals</strong> requiring executive transport.</p>
+  <p>✅ <strong>Families and groups</strong> needing spacious and comfortable vans.</p>
+</div>
+
+    <p className="mt-4 text-base font-light text-black">
+      <strong>Coverage Area:</strong> While we are <strong>based in Ella</strong>, our services extend to <strong>Badulla, Bandarawela, and many other cities</strong> across Sri Lanka.
+      Whether you need airport pickups, city-to-city transfers, or personalized chauffeur services, AHANSA Car Services ensures a smooth and reliable ride.
+    </p>
+
+    <p className="mt-4 text-base font-light text-black">
+      <strong>Booking & Pricing:</strong> We offer <strong>affordable rates</strong> with flexible booking options.
+      You can <strong>call us</strong> at <a href="tel:+94719807100" className="text-blue-500 hover:underline">+94702610614</a> or book a ride online.
+      Our team is available <strong>24/7</strong> to assist with your transportation needs.
+    </p>
+  </div>
+</div>
+
+
       </div>
 
       <div className="relative w-full mt-10 flex flex-col items-center justify-center text-center p-10 bg-gray-100">
@@ -172,20 +200,20 @@ export default function About() {
         ) : (
           <p className="text-gray-500">Please log in to submit a review.</p>
         )}
-        <div className="max-w-5xl mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-6xl mt-5 grid grid-cols-1 md:grid-cols-3 gap-6">
           {topReviews.length > 0 ? (
             topReviews.map((review, index) => (
               <div
                 key={index}
-                className="bg-blue-100 shadow-lg rounded-lg flex flex-col items-center relative overflow-hidden"
+                className="bg-blue-100 shadow-lg rounded-lg flex flex-col items-center relative overflow-hidden  w-full md:w-[250px] lg:w-[350px] min-h-[250px] p-6"
               >
                 <div className="bg-custom-green rounded-t-lg w-full py-4 flex flex-col items-center">
                   <Image
                     src={review.user.photo || '/default-user.jpg'}
                     alt={review.user.name}
-                    width={56}
-                    height={56}
-                    className="h-14 w-14 rounded-full bg-white p-1"
+                    width={58}
+                    height={58}
+                    className="h-16 w-16 rounded-full bg-white p-1"
                   />
                 </div>
                 <div className="p-4 text-center">
@@ -233,6 +261,19 @@ export default function About() {
           review={selectedReview} 
         />
       )}
+
+      <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
+              <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
+              <div className="flex gap-5 mt-2">
+                <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
+                <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
+                <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
+                <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
+                   </div>
+              <p className="text-sm text-black mt-2">&copy; 2024 Ceylon Ahasna Travel & Tour. All rights reserved.</p>
+            </footer>
+
     </>
   );
+
 }

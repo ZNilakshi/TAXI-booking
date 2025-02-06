@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Image from "next/image"; // Use next/image for optimized images
 import { useRouter } from "next/navigation";  // To programmatically navigate to the booking page
+import { FaEnvelope, FaPhone, FaWhatsapp, FaFacebook, FaYoutube, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Services() {
   const [bgOpacity, setBgOpacity] = useState(1);
@@ -27,8 +28,8 @@ export default function Services() {
     { name: 'Arugambay', link: '/arugambay' },
     { name: 'Balapitiya', link: '/balapitiya' },
     { name: 'Bentota', link: '/bentota' },
-    { name: 'Colombo', link: '/colombo' },
-    { name: 'Colombo Airport', link: '/colombo-airport' },
+    { name: 'Colombo City Tour', link: '/colombo' },
+    { name: 'Katunayaka Airport', link: '/colombo-airport' },
     { name: 'Dalhousie', link: '/dalhousie' },
     { name: 'Dambulla', link: '/dambulla' },
     { name: 'Dickwella', link: '/dickwella' },
@@ -39,7 +40,9 @@ export default function Services() {
     { name: 'Kalpitiya', link: '/kalpitiya' },
     { name: 'Kandy', link: '/kandy' },
     { name: 'Matara', link: '/matara' },
+    { name: 'Mirissa', link: '/mirissa' },
     { name: 'Mattala Airport', link: '/mattala-airport' },
+
   ];
 
   const handleLocationClick = (location: { name: string; link: string; }) => {
@@ -66,9 +69,9 @@ export default function Services() {
           </button>
           <button
             className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white"
-            onClick={() => window.location.href = 'tel:+94702610614'}
+            onClick={() => window.location.href = 'tel:+94719807100'}
           >
-             +94702610614
+             +94719807100
           </button>
         </div>
 <br></br>
@@ -97,10 +100,16 @@ export default function Services() {
 
       </div>
 
-      <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-        <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
-        <p className="text-sm text-black">&copy; 2024 AHASNA Car Service. All rights reserved.</p>
-      </footer>
+       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
+                    <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
+                    <div className="flex gap-5 mt-2">
+                      <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
+                      <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
+                      <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
+                      <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
+                         </div>
+                    <p className="text-sm text-black mt-2">&copy; 2024 Ceylon Ahasna Travel & Tour. All rights reserved.</p>
+                  </footer>
     </>
   );
 }

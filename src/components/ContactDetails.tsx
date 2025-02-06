@@ -8,9 +8,7 @@ import { SelectChangeEvent } from '@mui/material'; // Import SelectChangeEvent t
 interface FormData {
   firstName: string;
   lastName: string;
-  title: string;
   email: string;
-  idNumber: string;
   mobileNumber: string;
 }
 
@@ -51,12 +49,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
         firstName,
         lastName,
         email: formData.email || session.user.email || '',
+        mobileNumber: formData.mobileNumber || '',
       });
     } else {
       handleFormDataChange({
         firstName: formData.firstName || '',
         lastName: formData.lastName || '',
         email: formData.email || session?.user?.email || '',
+        mobileNumber: formData.mobileNumber || '',
       });
     }
   }, [session, formData, handleFormDataChange]);
@@ -86,17 +86,13 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
     if (!formData.lastName) {
       newErrors.lastName = 'Last name is required';
     }
-    if (!formData.title) {
-      newErrors.title = 'Title is required';
-    }
+    
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    if (!formData.idNumber) {
-      newErrors.idNumber = 'ID number is required';
-    }
+    
     if (!formData.mobileNumber) {
       newErrors.mobileNumber = 'Mobile number is required';
     } else if (!mobileNumberRegex.test(formData.mobileNumber)) {
@@ -142,23 +138,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
               fullWidth
               margin="normal"
             />
-            <FormControl variant="outlined" fullWidth margin="normal" error={!!errors.title}>
-              <InputLabel>Title</InputLabel>
-              <Select
-                name="title"
-                value={formData.title}
-                onChange={handleSelectChange}  
-                label="Title"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="Mr">Mr</MenuItem>
-                <MenuItem value="Miss">Miss</MenuItem>
-                <MenuItem value="Mrs">Mrs</MenuItem>
-              </Select>
-              {errors.title && <Typography color="error">{errors.title}</Typography>}
-            </FormControl>
+            
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="h6">Contact Information</Typography>
@@ -173,17 +153,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ formData, handleFormDat
               fullWidth
               margin="normal"
             />
-            <TextField
-              label="ID Number"
-              name="idNumber"
-              value={formData.idNumber}
-              onChange={handleInputChange}
-              error={!!errors.idNumber}
-              helperText={errors.idNumber}
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
+            
             <TextField
               label="Mobile Number"
               name="mobileNumber"

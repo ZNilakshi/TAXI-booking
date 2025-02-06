@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { FaEnvelope, FaPhone, FaFacebook, FaYoutube, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaWhatsapp, FaFacebook, FaYoutube, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
+import Image from "next/image"; // Use next/image for optimized images
 
 import Navbar from '../../components/Navbar';
 import "slick-carousel/slick/slick.css";
@@ -56,7 +57,7 @@ export default function Contact() {
         <h1 className="mt-40 text-6xl font-bold text-white">CONTACT US</h1>
         <div className="flex gap-5 mt-10 mb-20 py-4 px-10">
           <button className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking'}>Book a Ride</button>
-          <button className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white" onClick={() => window.location.href = 'tel:+94702610614'}>+94702610614</button>
+          <button className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white" onClick={() => window.location.href = 'tel:+94719807100'}>+94719807100</button>
         </div>
         <br></br>
         <div className="flex flex-wrap justify-center gap-10 mt-20 mb-20 w-4/5 mx-auto">
@@ -107,12 +108,12 @@ export default function Contact() {
             <div className="mb-4 flex items-center text-gray-800">
               <FaPhone className="mr-2" size={20} />
               <span className="font-semibold mr-2">Phone Number:</span>
-              <a href="tel:+12067470485" className="text-blue-500 hover:underline">+94702610614</a>
+              <a href="tel:+94719807100" className="text-blue-500 hover:underline">+94719807100</a>
             </div>
             <div className="mb-4 flex items-center text-gray-800">
               <FaMapMarkerAlt className="mr-2" size={20} />
               <span className="font-semibold mr-2">Headquarter:</span>
-              <p className="text-gray-800">6457 S 299th St, Auburn, WA, 98001</p>
+              <p className="text-blue-500">Reg No = W/1440, Ella.</p>
             </div>
             <div className="flex flex-col items-center justify-center text-gray-800">
               <h2 className="text-3xl font-semibold mb-5 text-custom-blue text-center">Follow Us</h2>
@@ -131,13 +132,16 @@ export default function Contact() {
           </div>
         </div>
       </div>
-      <footer className="w-full bg-opacity-80 text-white flex flex-col items-center py-4 bg-gray-900">
-        <div className="flex space-x-6">
-          <a href="https://www.facebook.com/abcdtaxiservice" className="text-white hover:text-gray-400"><FaFacebook size={30} /></a>
-          <a href="https://www.youtube.com/abcdtaxiservice" className="text-white hover:text-gray-400"><FaYoutube size={30} /></a>
-        </div>
-        <p className="text-center text-white mt-2">&copy; 2023 ABCD Taxi Service. All Rights Reserved.</p>
-      </footer>
+       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
+              <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
+              <div className="flex gap-5 mt-2">
+                <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
+                <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
+                <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
+                <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
+                   </div>
+              <p className="text-sm text-black mt-2">&copy; 2024 Ceylon Ahasna Travel & Tour. All rights reserved.</p>
+            </footer>
     </>
   );
 }

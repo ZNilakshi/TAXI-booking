@@ -11,9 +11,9 @@ const BookingSchema = new mongoose.Schema({
   // Contact Details
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  title: { type: String, required: true },
+
   email: { type: String, required: true },
-  idNumber: { type: String, required: true },
+
   mobileNumber: { type: String, required: true },
 
   // Vehicle Selection
@@ -23,7 +23,7 @@ const BookingSchema = new mongoose.Schema({
   },
 
   // Payment Method
-  paymentMethod: { type: String, required: true },
+ 
 
   // Timestamps
   createdAt: { type: Date, default: Date.now },
