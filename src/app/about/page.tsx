@@ -119,7 +119,7 @@ export default function About() {
             className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white"
             onClick={() => (window.location.href = "tel:+94719807100")}
           >
-            +94719807100
+            +94742291771
           </button>
         </div>
         <div className="w-4/5 mt-12 p-10 mx-auto"></div>
@@ -139,7 +139,7 @@ export default function About() {
   <div className="w-full md:w-1/2 text-center md:text-left">
     <p className="text-black text-4xl mb-5 font-light">ABOUT US</p>
     <p className="mt-2 text-base font-light text-black">
-      Since <strong>2020</strong>, AHANSA Car Services has been a trusted provider of
+      Since <strong>2020</strong>, Drivex has been a trusted provider of
       <strong> economy-to-luxury </strong> car transportation services in <strong>Ella, Sri Lanka</strong>.
       Whether you&apos;re a tourist exploring the scenic beauty of Ella or a local resident in need of reliable transport,
       we offer a seamless travel experience tailored to your needs.
@@ -158,12 +158,12 @@ export default function About() {
 
     <p className="mt-4 text-base font-light text-black">
       <strong>Coverage Area:</strong> While we are <strong>based in Ella</strong>, our services extend to <strong>Badulla, Bandarawela, and many other cities</strong> across Sri Lanka.
-      Whether you need airport pickups, city-to-city transfers, or personalized chauffeur services, AHANSA Car Services ensures a smooth and reliable ride.
+      Whether you need airport pickups, city-to-city transfers, or personalized chauffeur services, Drivex ensures a smooth and reliable ride.
     </p>
 
     <p className="mt-4 text-base font-light text-black">
       <strong>Booking & Pricing:</strong> We offer <strong>affordable rates</strong> with flexible booking options.
-      You can <strong>call us</strong> at <a href="tel:+94719807100" className="text-blue-500 hover:underline">+94702610614</a> or book a ride online.
+      You can <strong>call us</strong> at <a href="tel:+94742291771" className="text-blue-500 hover:underline">+94742291771</a> or book a ride online.
       Our team is available <strong>24/7</strong> to assist with your transportation needs.
     </p>
   </div>
@@ -263,14 +263,14 @@ export default function About() {
       )}
 
       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-              <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
+              <Image src="/9798.png" alt="Footer Logo" width={78} height={78} className="h-12 mb-2" />
               <div className="flex gap-5 mt-2">
                 <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
                 <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
                 <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
                 <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
                    </div>
-              <p className="text-sm text-black mt-2">&copy; 2024 Ceylon Ahasna Travel & Tour. All rights reserved.</p>
+              <p className="text-sm text-black mt-2">&copy; 2024 Drivex. All rights reserved.</p>
             </footer>
 
     </>

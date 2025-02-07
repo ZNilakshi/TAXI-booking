@@ -103,12 +103,12 @@ export default function Contact() {
             <div className="mb-4 flex items-center text-gray-800">
               <FaEnvelope className="mr-2" size={20} />
               <span className="font-semibold mr-2">Email:</span>
-              <a href="mailto:nwcarservices@icloud.com" className="text-blue-500 hover:underline">ahasnabooking@gmail.com</a>
+              <a href="mailto:nwcarservices@icloud.com" className="text-blue-500 hover:underline">drivex@gmail.com</a>
             </div>
             <div className="mb-4 flex items-center text-gray-800">
               <FaPhone className="mr-2" size={20} />
               <span className="font-semibold mr-2">Phone Number:</span>
-              <a href="tel:+94719807100" className="text-blue-500 hover:underline">+94719807100</a>
+              <a href="tel:+94719807100" className="text-blue-500 hover:underline">+94742291771</a>
             </div>
             <div className="mb-4 flex items-center text-gray-800">
               <FaMapMarkerAlt className="mr-2" size={20} />
@@ -135,12 +135,12 @@ export default function Contact() {
        <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
               <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
               <div className="flex gap-5 mt-2">
-                <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
+                <a href="https://wa.me/94742291771" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
                 <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
                 <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
                 <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
                    </div>
-              <p className="text-sm text-black mt-2">&copy; 2024 Ceylon Ahasna Travel & Tour. All rights reserved.</p>
+              <p className="text-sm text-black mt-2">&copy; 2024 Drivex. All rights reserved.</p>
             </footer>
     </>
   );
