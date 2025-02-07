@@ -89,19 +89,28 @@ const RideDetails: React.FC<RideDetailsProps> = ({ formData, handleFormDataChang
     setSuggestions(response.data.features.map((feature: any) => feature.place_name));
   };
 
-  const calculateDistance = (pickupCoords: [number, number], dropCoords: [number, number]) => {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = (dropCoords[1] - pickupCoords[1]) * (Math.PI / 180);
-    const dLon = (dropCoords[0] - pickupCoords[0]) * (Math.PI / 180);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(pickupCoords[1] * (Math.PI / 180)) * Math.cos(dropCoords[1] * (Math.PI / 180)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in kilometers
-    setDistance(distance.toFixed(2));
+  const calculateDistance = async (pickupCoords: [number, number], dropCoords: [number, number]) => {
+    const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+    const waypoints = `${pickupCoords.join(',')};${dropCoords.join(',')}`;
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${waypoints}`;
+  
+    try {
+      const response = await axios.get(url, {
+        params: {
+          access_token: accessToken,
+          geometries: 'geojson',
+        },
+      });
+  
+      const distanceInMeters = response.data.routes[0].distance; // Distance in meters
+      const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+      setDistance(distanceInKm);
+    } catch (error) {
+      console.error("Error fetching route distance:", error);
+      setDistance(null);
+    }
   };
-
+  
   const drawRoute = async (map: mapboxgl.Map, pickupCoords: [number, number], dropCoords: [number, number]) => {
     if (map.getLayer(routeLayerId)) {
       map.removeLayer(routeLayerId);
