@@ -11,53 +11,34 @@ import Image from 'next/image';
 import { FaWhatsapp, FaYoutube, FaFacebook, FaInstagram } from "react-icons/fa";
 import { SiImou } from "react-icons/si";
 import Slider from "react-slick"; // Import react-slick
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import arrow icons
 
-export function NextArrow(props: { onClick: any; }) {
+interface ArrowProps {
+  onClick?: () => void;
+}
+const NextArrow = (props: ArrowProps) => {
   const { onClick } = props;
   return (
     <div
-      style={{
-        position: 'absolute',
-        right: '15px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 1000,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        color: '#fff',
-        padding: '8px',
-        borderRadius: '50%',
-        cursor: 'pointer',
-      }}
       onClick={onClick}
+      className="absolute right-0 top-1/2 transform -translate-y-1/2 w-14 h-14 flex justify-center items-center  bg-opacity-50 rounded-l-full cursor-pointer z-10"
     >
-      <FaChevronRight size={20} />
+      <Image src="/fast-forward.png" alt="Next Arrow" width={20} height={20} />
     </div>
   );
-}
+};
 
-export function PrevArrow(props: { onClick: any; }) {
+const PrevArrow = (props: ArrowProps) => {
   const { onClick } = props;
   return (
     <div
-      style={{
-        position: 'absolute',
-        left: '15px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 1000,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        color: '#fff',
-        padding: '8px',
-        borderRadius: '50%',
-        cursor: 'pointer',
-      }}
       onClick={onClick}
+      className="absolute left-0 top-1/2 transform -translate-y-1/2 w-7 h-7 flex justify-center items-center  bg-opacity-50 rounded-r-full cursor-pointer z-10"
     >
-      <FaChevronLeft size={20} />
+      <Image src="/fast-forward.png" alt="Previous Arrow" width={20} height={20} className="rotate-180" />
     </div>
   );
-}
+};
+
 
 export default function About() {
   const { data: session } = useSession();
@@ -144,8 +125,8 @@ export default function About() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <FaChevronRight className="text-black hover:text-black text-2xl absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" />,
-    prevArrow: <FaChevronLeft className="text-black hover:text-black text-2xl absolute left-3 top-1/2 transform -translate-y-1/2 cursor-pointer" />,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
 
  
