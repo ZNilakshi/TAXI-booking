@@ -38,17 +38,59 @@ const Container = styled.div`
   display: flex;
   gap: 20px;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
 `;
 
 const StepperContainer = styled.div`
-  flex: 1;
+ margin-top: 80px; /* Adjust this based on your navbar height */
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  height: 100vh;
-  align-items: center;
-  position: sticky;
-  top: 0;
+  padding-bottom: 20px; /* Space below stepper */
+
+  @media (min-width: 768px) {
+    flex-direction: column; /* Keep vertical stepper for desktop */
+    align-items: center;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+`;
+
+const StepLabelCustom = styled(StepLabel)`
+  .MuiStepLabel-label {
+    text-transform: capitalize;
+    
+    font-size: 1rem; /* Default (desktop) size */
+    
+    @media (max-width: 580px) { 
+      font-size: 0.4rem; /* Smaller font on mobile */
+    }
+  }
+
+  .MuiSvgIcon-root {
+    font-size: 1.8rem; /* Default (desktop) size */
+    
+    @media (max-width: 600px) {
+      font-size: 1.2rem; /* Smaller icon size on mobile */
+    }
+  }
+`;
+
+
+const StepperWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  @media (min-width: 768px) {
+    flex-direction: column; /* Vertical on desktop */
+  }
 `;
 
 const FormContainer = styled.div`
@@ -63,15 +105,6 @@ const FormContainer = styled.div`
 
 const StepContent = styled.div`
   margin-bottom: 20px;
-`;
-
-const StepLabelCustom = styled(StepLabel)`
-  .MuiStepLabel-label {
-    font-size: 1.25rem;
-  }
-  .MuiSvgIcon-root {
-    font-size: 2rem;
-  }
 `;
 
 const MultiStepForm = () => {
@@ -214,24 +247,34 @@ const MultiStepForm = () => {
   return (
     <Container>
       <StepperContainer>
-      <Stepper activeStep={activeStep} orientation="vertical">
-  {steps.map((label, index) => (
-    <Step key={label} completed={index < activeStep}>
-      <StepLabelCustom
-        onClick={() => {
-          if (index <= activeStep) {
-            setActiveStep(index);
-          }
-        }}
-        style={{ cursor: index <= activeStep ? "pointer" : "default" }}
-      >
-        {label}
-      </StepLabelCustom>
-    </Step>
-  ))}
-</Stepper>
-
-      </StepperContainer>
+  <StepperWrapper>
+    <Stepper
+      activeStep={activeStep}
+      orientation="vertical" // Default (for desktop)
+      sx={{
+        '@media (max-width: 767px)': {
+          flexDirection: "row", // Make it horizontal on mobile
+          width: "100%",
+        },
+      }}
+    >
+      {steps.map((label, index) => (
+        <Step key={label} completed={index < activeStep}>
+          <StepLabelCustom
+            onClick={() => {
+              if (index <= activeStep) {
+                setActiveStep(index);
+              }
+            }}
+            style={{ cursor: index <= activeStep ? "pointer" : "default" }}
+          >
+            {label.toLowerCase()} {/* Lowercase step labels for mobile */}
+          </StepLabelCustom>
+        </Step>
+      ))}
+    </Stepper>
+  </StepperWrapper>
+</StepperContainer>
 
       <FormContainer>
         {steps.map((label, index) => (

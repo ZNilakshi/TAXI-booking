@@ -33,7 +33,7 @@ const SummaryContainer = styled(Container)`
 
 const SummaryHeader = styled(Typography)`
   margin-bottom: 20px;
-  color: #003366;
+  color:rgb(0, 0, 0);
 `;
 
 const SummaryItem = styled.div`
@@ -47,11 +47,15 @@ const SummaryItem = styled.div`
 
 const ItemTitle = styled(Typography)`
   font-weight: 600;
-  color: #003366;
+  color: black;
 `;
 
 const ItemContent = styled(Typography)`
   color: #666666;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  white-space: normal;
 `;
 
 const formatDateTime = (dateTime: string | undefined): string => {

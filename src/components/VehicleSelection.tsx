@@ -42,8 +42,16 @@ const FormContainer = styled(Container)`
 `;
 
 const VehicleImage = styled(CardMedia)`
-  height: 200px;
-  object-fit: cover;
+  width: 100%;
+  height: 170px; 
+
+  @media (max-width: 600px) {
+    height: 150px; // Smaller height on small screens
+  }
+
+  @media (min-width: 1200px) {
+    height: 250px; // Larger height on bigger screens
+  }
 `;
 
 // Function to calculate distance using Mapbox Directions API

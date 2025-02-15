@@ -164,20 +164,21 @@ export default function Home() {
       <div className="relative w-full py-20 text-center text-white flex flex-col items-center">
         <h1 className="mt-40 text-7xl font-semibold text-blue">Drivex</h1>
         <h2 className="mt-10 text-3xl font-light">SEATTLE&#39;S PREMIUM TRANSPORTATION COMPANY</h2>
-        <div className="flex gap-5 mt-10 mb-20 py-4 px-10">
-          <button
-            className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-black"
-            onClick={() => window.location.href = '/booking'}
-          >
-            Book a Ride
-          </button>
-          <button
-            className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white"
-            onClick={() => window.location.href = 'tel:+94719807100'}
-          >
-            +94742291771
-          </button>
-        </div>
+        <div className="flex flex-col sm:flex-row gap-5 mt-10 mb-20 py-4 px-10 items-center sm:items-start">
+  <button
+    className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-black w-full sm:w-auto"
+    onClick={() => window.location.href = '/booking'}
+  >
+    Book a Ride
+  </button>
+  <button
+    className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white w-full sm:w-auto"
+    onClick={() => window.location.href = 'tel:+94719807100'}
+  >
+    +94742291771
+  </button>
+</div>
+
         <div className="max-w-3xl mx-auto mt-1 p-1 text-black bg-opacity-80 rounded-lg">
           <p className="text-4xl font-light">SEATTLE&#39;S SPECIAL TRANSPORTATION SERVICES</p>
         </div>
@@ -202,15 +203,15 @@ export default function Home() {
         </button>
       </div>
       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-        <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
-        <div className="flex gap-5 mt-2">
-          <a href="https://wa.me/94742291771" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
-          <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
-          <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
-          <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
-             </div>
-        <p className="text-sm text-black mt-2">&copy; 2024 Drivex. All rights reserved.</p>
-      </footer>
+                         <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
+                         <div className="flex gap-5 mt-2">
+                           <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
+                           <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
+                           <a href="https://www.facebook.com/share/18aGuSSiPr/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
+                           <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
+                              </div>
+                         <p className="text-sm text-black mt-2">&copy; 2024 DriveX. All rights reserved.</p>
+                       </footer>
     </>
   );
 }

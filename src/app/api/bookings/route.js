@@ -34,9 +34,9 @@ Ride Details:
 Contact Details:
   First Name: ${formData.firstName || 'N/A'}
   Last Name: ${formData.lastName || 'N/A'}
-  Title: ${formData.title || 'N/A'}
+
   Email: ${formData.email || 'N/A'}
-  ID Number: ${formData.idNumber || 'N/A'}
+ 
   Mobile Number: ${formData.mobileNumber || 'N/A'}
 
 Vehicle Selection:
@@ -72,15 +72,28 @@ export async function POST(request) {
     // Prepare booking summary text
     const bookingSummary = formatBookingSummaryText(formData);
 
-    // Send confirmation email with booking summary
-    const mailOptions = {
-      from: process.env.SMTP_USER,
-      to: formData.email,
-      subject: 'Booking Confirmation',
-      text: `Dear ${formData.firstName},\n\nThank you for your booking. Here are your booking details:\n\n${bookingSummary}\n\nWe look forward to serving you!\n\nBest regards,\nYour Company`,
-    };
+     // Define manager's email
+     const managerEmail = "nilakshisamarasekara0@gmail.com"; // Replace with actual manager email
 
-    await transporter.sendMail(mailOptions);
+    // Send confirmation email with booking summary
+  // Email options for the customer
+  const customerMailOptions = {
+    from: process.env.SMTP_USER,
+    to: formData.email, // Send to the customer
+    subject: 'Booking Confirmation',
+    text: `Dear ${formData.firstName},\n\nThank you for your booking. Here are your booking details:\n\n${bookingSummary}\n\nWe look forward to serving you!\n\nBest regards,\nYour Company`,
+  };
+// Email options for the manager
+const managerMailOptions = {
+  from: process.env.SMTP_USER,
+  to: managerEmail, // Send to the manager
+  subject: `New Booking Received: ${formData.bookingId}`,
+  text: `Hello,\n\nA new booking has been received. Here are the details:\n\n${bookingSummary}\n\nPlease review and process accordingly.\n\nBest regards,\nYour Company`,
+};
+await Promise.all([
+  transporter.sendMail(customerMailOptions),
+  transporter.sendMail(managerMailOptions),
+]);
 
     return NextResponse.json({ success: true, message: 'Booking saved and confirmation email sent successfully' }, { status: 201 });
   } catch (error) {

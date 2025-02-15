@@ -47,13 +47,11 @@ export default function UserProfile() {
    
       <Navbar/>
      
-      <div className="flex w-full max-w-5xl mt-10 bg-white shadow-xl rounded-xl overflow-hidden">
-        {/* Left Sidebar with Tabs */}
-        <div className="w-1/4 bg-gray-50 p-6 border-r border-gray-200">
-          
-          
-
-          {/* Tabs for navigation */}
+       {/* Container for Profile & Booking History */}
+       <div className="flex flex-col md:flex-row w-full max-w-5xl mt-6 bg-white shadow-xl rounded-xl overflow-hidden">
+        
+        {/* Sidebar */}
+        <div className="w-full md:w-1/4 bg-gray-50 p-4 md:p-6 border-b md:border-b-0 md:border-r border-gray-200">
           <ul className="space-y-3">
             <li>
               <button
@@ -82,11 +80,12 @@ export default function UserProfile() {
           </ul>
         </div>
 
-        {/* Right Content Area */}
-        <div className="w-3/4 p-8 bg-gray-50">
+        {/* Content Area */}
+        <div className="w-full md:w-3/4 p-4 md:p-8 bg-gray-50">
+          {/* Profile Tab */}
           {activeTab === "profile" && (
             <div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-800 border-b border-gray-300 pb-2">
+              <h3 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 border-b border-gray-300 pb-2">
                 Profile Information
               </h3>
               <div className="mt-4 space-y-4">
@@ -102,9 +101,10 @@ export default function UserProfile() {
             </div>
           )}
 
+          {/* Booking History Tab */}
           {activeTab === "bookingHistory" && (
             <div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-800 border-b border-gray-300 pb-2">
+              <h3 className="text-xl md:text-2xl font-bold mb-4 text-gray-800 border-b border-gray-300 pb-2">
                 Booking History
               </h3>
               {loading ? (
@@ -114,7 +114,7 @@ export default function UserProfile() {
                   {bookings.map((booking) => (
                     <li
                       key={booking._id}
-                      className="flex justify-between items-center py-4 bg-white px-6 rounded-lg shadow mb-4"
+                      className="flex flex-col md:flex-row justify-between items-start md:items-center py-4 bg-white px-6 rounded-lg shadow mb-4"
                     >
                       <div>
                         <p className="text-lg font-semibold text-gray-800">
@@ -124,7 +124,6 @@ export default function UserProfile() {
                           {new Date(booking.dateTime).toLocaleString()}
                         </div>
                       </div>
-                    
                     </li>
                   ))}
                 </ul>

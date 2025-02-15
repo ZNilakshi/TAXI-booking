@@ -55,10 +55,20 @@ export default function Contact() {
       <Navbar />
       <div className="relative w-full py-20 text-center flex flex-col items-center">
         <h1 className="mt-40 text-6xl font-bold text-white">CONTACT US</h1>
-        <div className="flex gap-5 mt-10 mb-20 py-4 px-10">
-          <button className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking'}>Book a Ride</button>
-          <button className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white" onClick={() => window.location.href = 'tel:+94719807100'}>+94719807100</button>
-        </div>
+        <div className="flex flex-col sm:flex-row gap-5 mt-10 mb-20 py-4 px-10 items-center sm:items-start">
+  <button
+    className="bg-custom-blue text-white py-4 px-10 text-lg hover:bg-white hover:text-black w-full sm:w-auto"
+    onClick={() => window.location.href = '/booking'}
+  >
+    Book a Ride
+  </button>
+  <button
+    className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white w-full sm:w-auto"
+    onClick={() => window.location.href = 'tel:+94719807100'}
+  >
+    +94742291771
+  </button>
+</div>
         <br></br>
         <div className="flex flex-wrap justify-center gap-10 mt-20 mb-20 w-4/5 mx-auto">
           <div className="flex-1 bg-white shadow-lg p-8 rounded-lg transition-transform hover:scale-105">
@@ -103,12 +113,12 @@ export default function Contact() {
             <div className="mb-4 flex items-center text-gray-800">
               <FaEnvelope className="mr-2" size={20} />
               <span className="font-semibold mr-2">Email:</span>
-              <a href="mailto:nwcarservices@icloud.com" className="text-blue-500 hover:underline">drivex@gmail.com</a>
+              <a href="mailto:nwcarservices@icloud.com" className="text-blue-500 hover:underline">ahasnabooking@gmail.com</a>
             </div>
             <div className="mb-4 flex items-center text-gray-800">
               <FaPhone className="mr-2" size={20} />
               <span className="font-semibold mr-2">Phone Number:</span>
-              <a href="tel:+94719807100" className="text-blue-500 hover:underline">+94742291771</a>
+              <a href="tel:+94719807100" className="text-blue-500 hover:underline">+94719807100</a>
             </div>
             <div className="mb-4 flex items-center text-gray-800">
               <FaMapMarkerAlt className="mr-2" size={20} />
@@ -132,16 +142,16 @@ export default function Contact() {
           </div>
         </div>
       </div>
-       <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-              <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
-              <div className="flex gap-5 mt-2">
-                <a href="https://wa.me/94742291771" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
-                <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
-                <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
-                <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
-                   </div>
-              <p className="text-sm text-black mt-2">&copy; 2024 Drivex. All rights reserved.</p>
-            </footer>
+      <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
+                    <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
+                    <div className="flex gap-5 mt-2">
+                      <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
+                      <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
+                      <a href="https://www.facebook.com/share/18aGuSSiPr/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
+                      <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
+                         </div>
+                    <p className="text-sm text-black mt-2">&copy; 2024 DriveX. All rights reserved.</p>
+                  </footer>
     </>
   );
 }
