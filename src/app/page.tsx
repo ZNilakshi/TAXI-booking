@@ -152,7 +152,7 @@ export default function Home() {
     },
   ];
 
-  const vehicleImages = ["/Alto.png", "/prius.png", "/suzuki.png", "/kdh.png", "/kdhh.png"];
+  const vehicleImages = ["/5.png", "/4.png", "/3.png", "/2.png", "/1.png"];
 
   return (
     <>

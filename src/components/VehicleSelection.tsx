@@ -25,11 +25,11 @@ interface VehicleSelectionProps {
 
 // Vehicle data
 const vehicles: Vehicle[] = [
-  { name: 'Mini Car', basePrice: 85, imageUrl: '/Alto.png' },
-  { name: 'Sedan', basePrice: 100, imageUrl: '/prius.png' },
-  { name: 'Mini Van', basePrice: 110, imageUrl: '/suzuki.png' },
-  { name: 'Van 10 Seats', basePrice: 125, imageUrl: '/kdh.png' },
-  { name: 'Van 14 Seats', basePrice: 140, imageUrl: '/kdhh.png' },
+  { name: 'Mini Car', basePrice: 90, imageUrl: '/Alto.png' },
+  { name: 'Sedan', basePrice: 110, imageUrl: '/prius.png' },
+  { name: 'Mini Van', basePrice: 120, imageUrl: '/suzuki.png' },
+  { name: 'Van 10 Seats', basePrice: 130, imageUrl: '/kdh.png' },
+  { name: 'Van 14 Seats', basePrice: 155, imageUrl: '/kdhh.png' },
 ];
 
 // Styled components

@@ -65,18 +65,18 @@ const StepLabelCustom = styled(StepLabel)`
   .MuiStepLabel-label {
     text-transform: capitalize;
     
-    font-size: 1rem; /* Default (desktop) size */
+    font-size: 1rem; 
     
     @media (max-width: 580px) { 
-      font-size: 0.4rem; /* Smaller font on mobile */
+      font-size: 0.4rem; 
     }
   }
 
   .MuiSvgIcon-root {
-    font-size: 1.8rem; /* Default (desktop) size */
+    font-size: 1.8rem; 
     
     @media (max-width: 600px) {
-      font-size: 1.2rem; /* Smaller icon size on mobile */
+      font-size: 1.2rem; 
     }
   }
 `;
