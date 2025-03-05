@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -45,6 +46,7 @@
     "react-select": "^5.8.0",
     "react-slick": "^0.30.2",
     "react-step-progress-bar": "^1.0.3",
+    "sitemap": "^8.0.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.11",
     "twilio": "^5.4.3"
