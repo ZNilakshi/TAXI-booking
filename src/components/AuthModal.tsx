@@ -145,11 +145,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setSuccessMessage("");
   };
 
-  const handleForgotPasswordClick = () => {
-    setShowForgotPassword(true);
-    setError("");
-    setSuccessMessage("");
-  };
+  
 
   const handleBackToLoginClick = () => {
     setShowForgotPassword(false);
@@ -236,12 +232,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               >
                 {GoogleIcon} Sign In with Google
               </button>
-              <button
-                className="w-full text-custom-blue mt-4 hover:underline"
-                onClick={handleForgotPasswordClick}
-              >
-                Forgot Password?
-              </button>
+             
             </>
           )}
           {showForgotPassword && (

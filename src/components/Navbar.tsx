@@ -65,7 +65,7 @@ export default function Navbar() {
           {session?.user ? (
             <div className="relative">
               <Image
-                src={session.user.image || '/default-profile.png'}
+                src={session.user.image || '/default-profile.jpg'}
                 alt="Profile"
                 width={40}
                 height={40}

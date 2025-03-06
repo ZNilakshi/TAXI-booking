@@ -37,23 +37,28 @@ const authOptions: NextAuthOptions = {
         if (!credentials) {
           return null;
         }
-
-        await connect();  // Ensure DB is connected
-
+      
+        await connect(); // Ensure DB is connected
+      
         try {
           const user = await User.findOne({ email: credentials.email });
-
+      
           if (user) {
             const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
             if (isPasswordCorrect) {
-              return { ...user._doc, id: user._id }; // Ensure id is included
+              return {
+                ...user._doc, 
+                id: user._id.toString(),
+                image: user.image || "/default-profile.jpg", // Ensure image exists
+              };
             }
           }
           return null; // Return null if user not found or incorrect password
         } catch (err) {
           throw new Error(err instanceof Error ? err.message : "Unknown error during authentication");
         }
-      },
+      }
+      
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID ?? "",
@@ -98,19 +103,21 @@ const authOptions: NextAuthOptions = {
       return false;
     },
     async jwt({ token, user }) {
-      // Include role information in the token if the user exists
       if (user) {
         token.role = user.role;
+        token.image = user.image; // Store image in the token
       }
       return token;
-    },
+    }
+    ,
     async session({ session, token }) {
-      // Attach role to the session user
       if (token) {
         session.user.role = token.role as string;
+        session.user.image = token.image as string; // Attach image to session
       }
       return session;
-    },
+    }
+    ,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
