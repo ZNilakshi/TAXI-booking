@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "@/utils/SessionProvider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.drivex.lk"),
   title: {
     default: "DriveX - Rent Cars, Vans & Luxury Vehicles",
     template: "%s | DriveX",
@@ -56,27 +57,71 @@ export default async function RootLayout({
   <link rel="canonical" href="https://www.drivex.lk" />
   {/* Structured Data for SEO */}
   <Script
-    id="structured-data"
-    type="application/ld+json"
-    dangerouslySetInnerHTML={{
-      __html: JSON.stringify({
+  id="structured-data-sitelinks"
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.drivex.lk",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.drivex.lk/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }),
+  }}
+/><Script
+  id="structured-data-sitelinks"
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.drivex.lk",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.drivex.lk/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }),
+  }}
+/>
+
+<Script
+  id="structured-data-pages"
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify([
+      {
         "@context": "https://schema.org",
-        "@type": "CarRental",
-        name: "DriveX",
-        url: "https://www.drivex.lk",
-        description: "Book cars, vans, and luxury vehicles for travel in Sri Lanka.",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Sri Lanka",
-        },
-        contactPoint: {
-          "@type": "ContactPoint",
-          telephone: "+94742291771",
-          contactType: "customer service",
-        },
-      }),
-    }}
-  />
+        "@type": "WebPage",
+        "name": "Services",
+        "url": "https://www.drivex.lk/services"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Contact Us",
+        "url": "https://www.drivex.lk/contact"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Booking",
+        "url": "https://www.drivex.lk/booking"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "About Us",
+        "url": "https://www.drivex.lk/about"
+      }
+    ]),
+  }}
+/>
+
+
 </head>
 
       <body className={inter.className}>
