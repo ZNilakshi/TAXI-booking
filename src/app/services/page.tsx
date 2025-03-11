@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import Image from "next/image"; // Use next/image for optimized images
 import { useRouter } from "next/navigation";  // To programmatically navigate to the booking page
-import { FaEnvelope, FaPhone, FaWhatsapp, FaFacebook, FaYoutube, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Services() {
   const [bgOpacity, setBgOpacity] = useState(1);
@@ -100,16 +100,8 @@ export default function Services() {
 
       </div>
 
- <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-                    <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
-                    <div className="flex gap-5 mt-2">
-                      <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
-                      <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
-                      <a href="https://www.facebook.com/share/18aGuSSiPr/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
-                      <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
-                         </div>
-                    <p className="text-sm text-black mt-2">&copy; 2024 DriveX. All rights reserved.</p>
-                  </footer>
+ <Footer />
+ 
     </>
   );
 }

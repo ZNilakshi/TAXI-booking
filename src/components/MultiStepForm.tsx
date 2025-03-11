@@ -6,6 +6,7 @@ import VehicleSelection from "./VehicleSelection";
 import ContactDetails from "./ContactDetails";
 import BookingSummary from "./BookingSummary";
 import dayjs, { Dayjs } from "dayjs";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 type Vehicle = {
   name: string;
@@ -65,18 +66,18 @@ const StepLabelCustom = styled(StepLabel)`
   .MuiStepLabel-label {
     text-transform: capitalize;
     
-    font-size: 1rem; 
+    font-size: 1rem; /* Default (desktop) size */
     
     @media (max-width: 580px) { 
-      font-size: 0.4rem; 
+      font-size: 0.4rem; /* Smaller font on mobile */
     }
   }
 
   .MuiSvgIcon-root {
-    font-size: 1.8rem; 
+    font-size: 1.8rem; /* Default (desktop) size */
     
     @media (max-width: 600px) {
-      font-size: 1.2rem; 
+      font-size: 1.2rem; /* Smaller icon size on mobile */
     }
   }
 `;
@@ -124,6 +125,8 @@ const MultiStepForm = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false); // State to manage success popup
+  const [loading, setLoading] = useState(false);
 
   // Use useCallback to memoize the handler and debounce state updates to avoid repeated renders
   const handleFormDataChange = useCallback(
@@ -234,11 +237,16 @@ const MultiStepForm = () => {
         .then((response) => response.json())
         .then(() => {
           setIsSubmitted(true);
+        setOpenDialog(true); // ✅ Open dialog when booking is successful
+    
           
         })
         .catch(() => {
           alert("Failed to save booking.");
-        });
+        })
+        .finally(() => {
+          setLoading(false); // Stop loading
+        })
     }
   };
 ;
@@ -285,18 +293,32 @@ const MultiStepForm = () => {
             {getStepContent(index)}
           </StepContent>
         ))}
+ {activeStep === steps.length - 1 && (
+        <div>
+          {!isSubmitted ? (
+           <Button
+           variant="contained"
+           color="primary"
+           onClick={saveFormData}
+           disabled={loading} // Disable button when loading
+         >
+           {loading ? "Submitting..." : "Submit"}
+         </Button>
+         
+          ) : null}
+        </div>
+      )}
 
-        {activeStep === steps.length - 1 && (
-          <div>
-            {!isSubmitted ? (
-              <Button variant="contained" color="primary" onClick={saveFormData}>
-                Submit
-              </Button>
-            ) : (
-              <div>Booking successful. Confirmation message will be sent to your email.</div>
-            )}
-          </div>
-        )}
+      {/* Success Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Booking Successful</DialogTitle>
+        <DialogContent>Your booking has been successfully confirmed! A confirmation email has been sent.</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
       </FormContainer>
     </Container>
   );
@@ -306,4 +328,3 @@ export default MultiStepForm;
 function onPrevious(): void {
   throw new Error("Function not implemented.");
 }
-

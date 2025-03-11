@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import Modal from "../../components/Modal"; // Import the Modal component
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import Image from 'next/image';
-import { FaWhatsapp, FaYoutube, FaFacebook, FaInstagram } from "react-icons/fa";
 import { SiImou } from "react-icons/si";
 import Slider from "react-slick"; // Import react-slick
 
@@ -125,9 +125,15 @@ export default function About() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true, // Enable autoplay
+    autoplaySpeed: 3000, // Change speed if needed
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    pauseOnHover: false, // Prevent pause on hover
+    pauseOnFocus: false, // Prevent pause on focus
+    swipeToSlide: true, // Enable smooth swiping
   };
+  
 
  
   
@@ -153,10 +159,10 @@ export default function About() {
     Book a Ride
   </button>
   <button
-    className="bg-white text-black py-4 px-6 text-lg hover:bg-custom-blue hover:text-white w-full sm:w-auto"
-    onClick={() => window.location.href = 'tel:+94719807100'}
+    className="bg-white text-black py-4 px-12 text-lg hover:bg-custom-blue hover:text-white w-full sm:w-auto"
+    onClick={() => window.location.href = 'tel:+94742291771'}
   >
-    +94742291771
+    Call Us
   </button>
 </div>
         <div className="w-4/5 mt-12 p-10 mx-auto"></div>
@@ -224,7 +230,7 @@ export default function About() {
   <p className="mt-5 text-sm md:text-base text-gray-700 leading-relaxed">
     <strong>Booking & Pricing:</strong> We offer affordable rates with easy booking options.  
     Call us at <a href="tel:+94702610614" className="text-blue-600 font-medium hover:underline">+94742291771</a>  
-    or book online. Our team is available 24/7.
+     or book online. Our team is available 24/7.
   </p>
 </div>
 
@@ -374,16 +380,9 @@ export default function About() {
         />
       )}
 
-      <footer className="w-full bg-opacity-80 text-white flex flex-col items-center justify-center py-5 mt-10">
-              <Image src="/9798.png" alt="Footer Logo" width={68} height={68} className="h-12 mb-2" />
-              <div className="flex gap-5 mt-2">
-                <a href="https://wa.me/94719807100" target="_blank" rel="noopener noreferrer"><FaWhatsapp className="text-3xl text-green-500" /></a>
-                <a href="https://www.youtube.com/channel/yourchannel" target="_blank" rel="noopener noreferrer"><FaYoutube className="text-3xl text-red-500" /></a>
-                <a href="https://www.facebook.com/share/18aGuSSiPr/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"><FaFacebook className="text-3xl text-blue-600" /></a>
-                <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer"><FaInstagram className="text-3xl text-pink-500" /></a>
-                   </div>
-              <p className="text-sm text-black mt-2">&copy; 2024 DriveX. All rights reserved.</p>
-            </footer>
+      <div>
+        <Footer />
+      </div>
 
     </>
   );

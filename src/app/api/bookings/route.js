@@ -81,14 +81,14 @@ export async function POST(request) {
     from: process.env.SMTP_USER,
     to: formData.email, // Send to the customer
     subject: 'Booking Confirmation',
-    text: `Dear ${formData.firstName},\n\nThank you for your booking. Here are your booking details:\n\n${bookingSummary}\n\nWe look forward to serving you!\n\nBest regards,\nYour Company`,
+    text: `Dear ${formData.firstName},\n\nThank you for your booking. Here are your booking details:\n\n${bookingSummary}\n\nWe look forward to serving you!\n\nBest regards,\nDriveX`,
   };
 // Email options for the manager
 const managerMailOptions = {
   from: process.env.SMTP_USER,
   to: managerEmail, // Send to the manager
   subject: `New Booking Received: ${formData.bookingId}`,
-  text: `Hello,\n\nA new booking has been received. Here are the details:\n\n${bookingSummary}\n\nPlease review and process accordingly.\n\nBest regards,\nYour Company`,
+  text: `Hello,\n\nA new booking has been received. Here are the details:\n\n${bookingSummary}\n\nPlease review and process accordingly.\n\nBest regards,\nDriveX`,
 };
 await Promise.all([
   transporter.sendMail(customerMailOptions),

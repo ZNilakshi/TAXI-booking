@@ -63,7 +63,7 @@ const formatDateTime = (dateTime: string | undefined): string => {
 };
 
 const formatPrice = (price: number | undefined): string => {
-  return price ? `RS {price.toFixed(2)}` : 'N/A';
+  return price ? `RS ${price.toFixed(2)}` : 'N/A';
 };
 
 const BookingSummary = ({ formData = {} as BookingFormData }) => {
