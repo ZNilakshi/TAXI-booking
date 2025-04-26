@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaCar, FaShieldAlt, FaGlobe, FaUserTie, FaUsers, FaChild, FaBus } from 'react-icons/fa';
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function AboutContactPage() {
   const [bgOpacity] = useState(1);
@@ -68,7 +69,7 @@ export default function AboutContactPage() {
             <motion.div variants={fadeInUp} className="w-20 h-1 bg-custom-blue mx-auto mb-8 rounded-full"></motion.div>
             <motion.p variants={fadeInUp} className="text-xl text-gray-600 max-w-4xl mx-auto">
               Since 2020, DriveX has been setting new standards for premium transportation in Ella and beyond. 
-              What began as a local service has grown into the region's most trusted name for safe, comfortable, 
+              What began as a local service has grown into the region&apos;s most trusted name for safe, comfortable, 
               and reliable travel experiences.
             </motion.p>
           </motion.div>
@@ -142,7 +143,7 @@ export default function AboutContactPage() {
               {
                 icon: <FaUsers className="h-8 w-8" />,
                 title: "Tourists",
-                description: "Discover Sri Lanka's breathtaking landscapes with our knowledgeable drivers who double as local guides."
+                description: "Discover Sri Lanka&apos;s breathtaking landscapes with our knowledgeable drivers who double as local guides."
               },
               {
                 icon: <FaUserTie className="h-8 w-8" />,
@@ -244,30 +245,34 @@ export default function AboutContactPage() {
                 </motion.div>
               </div>
 
-          {/* Photo Side */}
-<div className="md:w-1/2 p-10">
-  <motion.div 
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    viewport={{ once: true }}
-    className="h-full flex flex-col"
-  >
-       <div className="bg-gray-100 rounded-xl overflow-hidden flex-grow h-96">
-      <img 
-        src="/air.webp" // Replace with your actual image path
-        alt="DriveX Headquarters in Ella, Sri Lanka"
-        className="w-full h-full object-cover"
-      />
-    </div>
-    
-  </motion.div>
-</div>
+              {/* Photo Side */}
+              <div className="md:w-1/2 p-10">
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  className="h-full flex flex-col"
+                >
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Our Location</h3>
+                  <div className="bg-gray-100 rounded-xl overflow-hidden flex-grow h-96 relative">
+                    <Image
+                      src="/air.webp"
+                      alt="DriveX Headquarters in Ella, Sri Lanka"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority={false}
+                    />
+                  </div>
+                  <p className="mt-6 text-gray-600">
+                    Visit our headquarters or contact us to arrange a meeting with our team.
+                  </p>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-     
 
       <Footer />
     </>
