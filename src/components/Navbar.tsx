@@ -57,8 +57,7 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
           <a href="/" className="text-white cursor-pointer hover:underline">Home</a>
-          <a href="/about" className="text-white cursor-pointer hover:underline">About</a>
-          <a href="/booking" className="text-white cursor-pointer hover:underline">Booking</a>
+                <a href="/booking" className="text-white cursor-pointer hover:underline">Booking</a>
           <a href="/contact" className="text-white cursor-pointer hover:underline">Contact</a>
           <a href="/services" className="text-white cursor-pointer hover:underline">Services</a>
 
@@ -92,8 +91,7 @@ export default function Navbar() {
     onClick={() => setIsMobileMenuOpen(false)} // Closes menu when clicking outside
   >
     <a href="/" className="text-white cursor-pointer hover:underline" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-    <a href="/about" className="text-white cursor-pointer hover:underline" onClick={() => setIsMobileMenuOpen(false)}>About</a>
-    <a href="/booking" className="text-white cursor-pointer hover:underline" onClick={() => setIsMobileMenuOpen(false)}>Booking</a>
+       <a href="/booking" className="text-white cursor-pointer hover:underline" onClick={() => setIsMobileMenuOpen(false)}>Booking</a>
     <a href="/contact" className="text-white cursor-pointer hover:underline" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
     <a href="/services" className="text-white cursor-pointer hover:underline" onClick={() => setIsMobileMenuOpen(false)}>Services</a>
     
