@@ -307,7 +307,7 @@ export default function Home() {
           <p className="text-4xl font-light text-black mt-10 mb-5"> REVIEWS</p>
    
           {session ? (
-            <div className="w-full max-w-2xl bg-white p-6 border border-gray-300 rounded shadow-lg mb-6">
+            <div className="w-full max-w-2xl bg-white text-black p-6 border border-gray-300 rounded shadow-lg mb-6">
               <textarea
                 className="w-full p-3 mb-3 border border-gray-300 rounded"
                 rows={3}
@@ -353,12 +353,12 @@ export default function Home() {
                   <div className="p-4 text-center">
                     <p className="text-sm text-gray-700 italic mb-4">
                       &quot;
-                      {review.text.length > 100
-                        ? review.text.substring(0, 100) + "&quot;..."
+                      {review.text.length > 200
+                        ? review.text.substring(0, 200) + "..."
                         : review.text}
                       &quot;
                     </p>
-                    {review.text.length > 100 && (
+                    {review.text.length > 200 && (
                       <button
                         className="text-blue-500 mt-2"
                         onClick={() => openModal(review)}

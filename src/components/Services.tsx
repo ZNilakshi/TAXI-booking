@@ -14,7 +14,7 @@ interface Place {
 const places: Place[] = [
   {
     name: "Polonnaruwa",
-    thumbnail: "/1.jpg",
+    thumbnail: "/polonnaruwa.jpg",
     size: "medium",
     images: ["/polonnaruwa3.jpg", "/polonnaruwa2.jpg", "/polonnaruwa1.jpg"]
   },
