@@ -1,39 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚖 RideShare Pro - Next.js Ride-Booking Platform
 
-## Getting Started
+![Project Banner](/public/banner.png) 
+*A modern Uber-like web app with real-time booking, dynamic pricing, and admin dashboard*
 
-First, run the development server:
+## 🌟 Features
+
+### 🛡️ Authentication
+- Email/password login
+- Google OAuth integration
+- Session management with NextAuth.js
+
+### 🗺️ Ride Booking
+- Interactive map (Google Maps/Mapbox)
+- Location autocomplete
+- Fare estimation calculator
+- Vehicle type selection
+
+### 💻 Dashboard
+- User booking history
+- Admin management panel
+- Support ticket system
+- Rating and reviews
+
+### 🚀 Tech Highlights
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Shadcn UI Components
+- NextAuth.js
+- Vercel Serverless Functions
+
+## 🛠️ Installation
+
+### Prerequisites
+- Node.js 18+
+- npm/yarn/pnpm/bun
+- Google Cloud API key (for Maps)
+- Firebase credentials (if using)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Clone repository
+git clone https://github.com/yourusername/ride-share-pro.git
+cd ride-share-pro
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Install dependencies
+npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-npm install --legacy-peer-deps
-npm run dev
+# Set up environment variables
+cp .env.example .env.local
