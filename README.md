@@ -1,4 +1,4 @@
-# 🚖 RideShare Pro - Next.js Ride-Booking Platform
+# 🚖 DriveX- Next.js Ride-Booking Platform
 
 ![Project Banner](/public/banner.png) 
 *A modern Uber-like web app with real-time booking, dynamic pricing, and admin dashboard*
